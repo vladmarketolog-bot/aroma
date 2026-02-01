@@ -1,50 +1,97 @@
-/* Custom Styles */
+/* Custom Styles 2026 Redesign */
 body {
-    background-color: #050505;
-    color: #E5E5E5;
+    background-color: #030303;
+    /* Deeper black */
+    color: #F0F0F0;
     -webkit-tap-highlight-color: transparent;
+    font-family: 'Inter', sans-serif;
 }
 
+/* --- SCROLLBAR --- */
 ::-webkit-scrollbar {
-    width: 4px;
-}
-
-::-webkit-scrollbar-track {
+    width: 0px;
+    /* Hidden scrollbar for cleaner look */
     background: transparent;
 }
 
-::-webkit-scrollbar-thumb {
-    background: #333;
-    border-radius: 2px;
+/* --- GLASSMORPHISM 2.0 --- */
+.glass-premium {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(40px);
+    -webkit-backdrop-filter: blur(40px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    box-shadow:
+        0 4px 30px rgba(0, 0, 0, 0.5),
+        inset 0 0 20px rgba(255, 255, 255, 0.02);
 }
 
 .glass-panel {
-    background: rgba(20, 20, 20, 0.6);
+    background: rgba(20, 20, 20, 0.4);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.5);
 }
 
+/* --- TYPOGRAPHY EFFECTS --- */
 .gold-glow {
-    text-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+    text-shadow: 0 0 30px rgba(212, 175, 55, 0.6);
 }
 
+.text-gradient-gold {
+    background: linear-gradient(135deg, #FBE68A 0%, #D4AF37 50%, #906F14 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* --- ANIMATIONS --- */
+@keyframes aurora {
+    0% {
+        background-position: 0% 50%;
+        opacity: 0.3;
+    }
+
+    50% {
+        background-position: 100% 50%;
+        opacity: 0.6;
+    }
+
+    100% {
+        background-position: 0% 50%;
+        opacity: 0.3;
+    }
+}
+
+.animate-aurora {
+    background: linear-gradient(-45deg, #050505, #1a1005, #10051a, #001010);
+    background-size: 400% 400%;
+    animation: aurora 15s ease infinite;
+}
+
+/* --- UI HELPERS --- */
 .screen {
     display: none;
     opacity: 0;
-    transition: opacity 0.4s ease;
+    transition: opacity 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+    /* Smoother transition */
     pointer-events: none;
-    /* Critical: inhibit interactions when hidden */
 }
 
 .screen.active {
     display: flex;
     opacity: 1;
     pointer-events: auto;
-    /* Enable when active */
 }
 
 .nav-btn.active {
-    color: #D4AF37;
-    /* gold-400 */
+    color: #FBE68A;
+}
+
+.cinematic-shadow {
+    box-shadow: 0 20px 60px -10px rgba(0, 0, 0, 0.8);
+}
+
+.safe-pb {
+    padding-bottom: env(safe-area-inset-bottom, 20px);
 }

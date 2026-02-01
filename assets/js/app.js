@@ -50,16 +50,12 @@ function setupEventListeners() {
         }
 
         // Like Button (Delegation)
-        const likeBtn = e.target.closest('button[data-action="like"]');
+        const likeBtn = e.target.closest('[data-action="like"]');
         if (likeBtn) {
             e.preventDefault();
             const id = likeBtn.dataset.id;
-            // Find full recipe object? 
-            // We store recipes in state.recipes.
-            // If it's from Favorites screen, it's in state.favorites.
+            // Find full recipe in generated recipes OR favorites (if unliking from collection)
             let recipe = state.recipes.find(r => r.id === id);
-
-            // If not in generated recipes, maybe it's already in favorites (and we are unliking from favorites screen)
             if (!recipe) {
                 recipe = state.favorites.find(r => r.id === id);
             }
@@ -67,25 +63,46 @@ function setupEventListeners() {
             if (recipe) {
                 const added = state.toggleFavorite(recipe);
 
-                // Visual feedback
-                const svg = likeBtn.querySelector('svg');
-                if (added) {
-                    svg.setAttribute('fill', 'currentColor');
-                    svg.classList.remove('text-white/40');
-                    svg.classList.add('text-red-500', 'stroke-red-500');
-                    likeBtn.classList.add('scale-110');
-                    setTimeout(() => likeBtn.classList.remove('scale-110'), 200);
-                    ui.showToast('Сохранено в избранное', 'success');
-                } else {
-                    svg.setAttribute('fill', 'none');
-                    svg.classList.remove('text-red-500', 'stroke-red-500');
-                    svg.classList.add('text-white/40');
-                    ui.showToast('Удалено из избранного', 'delete');
-
-                    // If on Favorites screen, refresh
-                    if (document.getElementById('screen-favorites').classList.contains('active')) {
-                        ui.renderFavorites();
+                // Update UI on ALL buttons for this card (Heart + Main Button)
+                const card = likeBtn.closest('.glass-panel');
+                if (card) {
+                    // 1. Update Heart
+                    const heartBtn = card.querySelector('button[data-action="like"].w-10');
+                    if (heartBtn) {
+                        const svg = heartBtn.querySelector('svg');
+                        if (added) {
+                            svg.setAttribute('fill', 'currentColor');
+                            svg.classList.remove('text-white/40');
+                            svg.classList.add('text-red-500', 'stroke-red-500');
+                            heartBtn.classList.add('scale-110');
+                            setTimeout(() => heartBtn.classList.remove('scale-110'), 200);
+                        } else {
+                            svg.setAttribute('fill', 'none');
+                            svg.classList.remove('text-red-500', 'stroke-red-500');
+                            svg.classList.add('text-white/40');
+                        }
                     }
+
+                    // 2. Update Big Button
+                    const bigBtn = card.querySelector('button[data-action="like"].w-full');
+                    if (bigBtn) {
+                        if (added) {
+                            bigBtn.classList.remove('bg-gold-500/10', 'hover:bg-gold-500/20', 'border-gold-500/20', 'text-gold-400');
+                            bigBtn.classList.add('bg-green-500/20', 'text-green-400', 'border-green-500/20');
+                            bigBtn.textContent = 'Сохранено в коллекции';
+                        } else {
+                            bigBtn.classList.add('bg-gold-500/10', 'hover:bg-gold-500/20', 'border-gold-500/20', 'text-gold-400');
+                            bigBtn.classList.remove('bg-green-500/20', 'text-green-400', 'border-green-500/20');
+                            bigBtn.textContent = 'Добавить в коллекцию';
+                        }
+                    }
+                }
+
+                ui.showToast(added ? 'Сохранено в избранное' : 'Удалено из избранного', added ? 'success' : 'delete');
+
+                // Refresh if on Favorites screen
+                if (!added && document.getElementById('screen-favorites').classList.contains('active')) {
+                    ui.renderFavorites();
                 }
             }
         }
@@ -107,7 +124,7 @@ function setupEventListeners() {
     if (searchInput) {
         searchInput.addEventListener('input', (e) => {
             const query = e.target.value.toLowerCase().trim();
-            console.log('Search:', query); // Debugging
+
 
             // Clean state if query is too short
             if (query.length < 1) {
@@ -171,7 +188,7 @@ function setupEventListeners() {
 
 // 3. Logic Helpers
 function renderCelebrities() {
-    const container = document.querySelector('.overflow-x-auto .flex'); // Target the container inside the scroll wrapper
+    const container = document.getElementById('celebrities-container');
     if (!container) return;
 
     // We assume 'celebrities' is imported. Check top of file.
@@ -198,26 +215,29 @@ function renderCelebrities() {
     // Let's write the function content assuming 'celebrities' is available.
 
     container.innerHTML = celebrities.map(celeb => `
-        <div class="snap-center shrink-0 w-64 glass-panel p-4 rounded-2xl border border-white/5 relative group cursor-pointer hover:border-gold-400/30 transition">
-            <div class="flex items-center gap-3 mb-3">
-                <div class="w-10 h-10 rounded-full bg-white/10 overflow-hidden">
-                    <img src="${celeb.image}" class="w-full h-full object-cover">
+        <div class="snap-center shrink-0 w-72 glass-premium p-0 rounded-3xl relative group cursor-pointer overflow-hidden transition-all duration-500 hover:shadow-2xl hover:shadow-gold-900/10">
+            <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent z-10 opacity-90"></div>
+            <img src="${celeb.image}" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-80 group-hover:opacity-100">
+            
+            <div class="relative z-20 p-6 flex flex-col h-[380px] justify-end">
+                <div class="mb-auto pt-2">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/5 mb-3">
+                        <span class="w-1.5 h-1.5 rounded-full ${celeb.mix[0].color} animate-pulse"></span>
+                        <span class="text-[9px] text-white/90 uppercase tracking-wider">${celeb.vibe}</span>
+                    </div>
                 </div>
-                <div>
-                    <div class="text-sm font-serif text-white">${celeb.name}</div>
-                    <div class="text-[9px] text-white/40 uppercase">${celeb.vibe}</div>
+
+                <h3 class="font-serif text-3xl text-white italic mb-1 leading-none">${celeb.name}</h3>
+                <div class="w-10 h-0.5 bg-gold-500/50 mb-4 rounded-full"></div>
+                
+                <p class="text-xs text-white/60 font-light leading-relaxed mb-4 line-clamp-2">"${celeb.quote}"</p>
+                
+                <div class="flex items-center gap-2 text-[10px] text-white/40 uppercase tracking-widest">
+                    <span>${celeb.mix[0].name}</span>
+                    <span class="text-gold-400">+</span>
+                    <span>${celeb.mix[1].name}</span>
                 </div>
             </div>
-            <div class="space-y-2 text-[10px] text-white/70">
-                <div class="flex items-center gap-2 bg-white/5 p-1.5 rounded-lg">
-                    <span class="w-1.5 h-1.5 rounded-full ${celeb.mix[0].color}"></span> ${celeb.mix[0].name}
-                </div>
-                <div class="flex justify-center text-gold-400 text-xs">+</div>
-                <div class="flex items-center gap-2 bg-white/5 p-1.5 rounded-lg">
-                    <span class="w-1.5 h-1.5 rounded-full ${celeb.mix[1].color}"></span> ${celeb.mix[1].name}
-                </div>
-            </div>
-            <p class="mt-3 text-[10px] italic text-white/50 leading-tight">"${celeb.quote}"</p>
         </div>
     `).join('');
 }
@@ -322,11 +342,39 @@ function generateRecipes() {
     ui.renderRecipes(topRecipes);
 }
 
-function getAlchemyDescription(base, addon, vibe) {
-    const baseNote = base.notes[base.notes.length - 1];
-    const topNote = addon.notes[0];
+const FAMILY_MAP = {
+    // Woody Archetype
+    'Woody': 'Woody', 'Leather': 'Woody', 'Fougère': 'Woody', 'Chypre': 'Woody', 'Tobacco': 'Woody',
+    // Floral Archetype
+    'Floral': 'Floral',
+    // Citrus/Fresh Archetype
+    'Citrus': 'Citrus', 'Fresh': 'Citrus', 'Green': 'Citrus', 'Aromatic': 'Citrus', 'Sea': 'Citrus', 'Water': 'Citrus',
+    // Gourmand Archetype
+    'Gourmand': 'Gourmand', 'Fruity': 'Gourmand', 'Boozy': 'Gourmand', 'Sweet': 'Gourmand', 'Amber': 'Gourmand', 'Oriental': 'Gourmand', 'Spicy': 'Gourmand',
+    // Clean Archetype
+    'Clean': 'Clean', 'Musk': 'Clean', 'Aldehyde': 'Clean', 'Soapy': 'Clean'
+};
 
-    const effect = alchemyEffects[base.family]?.[addon.family] || 'уникальный контраст';
+function getAlchemyDescription(base, addon, vibe) {
+    const baseNote = base.notes[base.notes.length - 1]; // Pick a base note
+    const topNote = addon.notes[0]; // Pick a top note
+
+    // Normalize families to use our effects matrix
+    const baseArch = FAMILY_MAP[base.family] || 'Woody';
+    const addonArch = FAMILY_MAP[addon.family] || 'Floral';
+
+    // Try lookup both ways or direct
+    let effect = alchemyEffects[baseArch]?.[addonArch];
+
+    // If not found, try varying the fallback or using a generic "Complex" one
+    if (!effect) {
+        // Fallback for same-family layering
+        if (baseArch === addonArch) {
+            effect = `усиление ${baseArch.toLowerCase()} нот`;
+        } else {
+            effect = 'уникальный контраст';
+        }
+    }
 
     return {
         mix: `${baseNote} + ${topNote}`,

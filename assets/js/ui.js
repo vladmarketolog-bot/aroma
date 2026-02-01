@@ -15,13 +15,13 @@ export const ui = {
         if (!container) return;
 
         container.innerHTML = vibes.map(v => `
-            <button data-vibe="${v.id}" class="vibe-card relative h-28 rounded-xl bg-white/5 border border-white/5 hover:border-gold-400/30 transition active:scale-95 text-left p-3 flex flex-col justify-between overflow-hidden group">
-                <div class="absolute top-2 right-2 text-xl opacity-50 group-hover:scale-110 transition">${v.icon}</div>
-                <div class="mt-auto relative z-10">
-                    <div class="font-bold text-sm text-white mb-1 leading-tight">${v.name}</div>
-                    <div class="text-[9px] text-white/40 leading-tight">${v.desc}</div>
+            <button data-vibe="${v.id}" class="vibe-card relative h-32 rounded-[2rem] bg-white/5 border border-white/5 active:scale-95 text-left p-5 flex flex-col justify-between overflow-hidden group transition-all duration-300 hover:bg-white/10">
+                <div class="absolute top-0 right-0 p-4 text-3xl opacity-30 group-hover:scale-125 group-hover:rotate-12 transition duration-500 origin-center grayscale group-hover:grayscale-0">${v.icon}</div>
+                <div class="mt-auto relative z-10 w-full">
+                    <div class="font-serif text-lg text-white mb-1 leading-tight group-hover:translate-x-1 transition">${v.name.split(' / ')[0]}</div>
+                    <div class="text-[9px] text-white/30 uppercase tracking-widest leading-tight group-hover:text-gold-400 transition">${v.desc}</div>
                 </div>
-                <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+                <div class="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition duration-500"></div>
             </button>
         `).join('');
 
@@ -164,25 +164,26 @@ export const ui = {
 
     showToast(msg, type = 'success') {
         const box = document.createElement('div');
-        box.className = `fixed top-6 left-1/2 -translate-x-1/2 z-[60] px-4 py-2 rounded-full border backdrop-blur-md flex items-center gap-2 text-xs font-medium animate-reveal transition-all duration-300 transform`;
+        // Glass premium toast with blur and border
+        box.className = `fixed top-6 left-1/2 -translate-x-1/2 z-[100] px-6 py-3 rounded-2xl glass-premium flex items-center gap-3 text-xs font-medium animate-reveal transition-all duration-300 transform shadow-2xl`;
 
         if (type === 'success') {
-            box.classList.add('bg-green-900/40', 'border-green-500/30', 'text-green-200');
-            box.innerHTML = `<span class="text-green-400">✓</span> ${msg}`;
+            box.classList.add('border-green-500/20');
+            box.innerHTML = `<div class="w-5 h-5 rounded-full bg-green-500/20 flex items-center justify-center text-green-400">✓</div> <span class="text-white/90">${msg}</span>`;
         } else if (type === 'delete') {
-            box.classList.add('bg-red-900/40', 'border-red-500/30', 'text-red-200');
-            box.innerHTML = `<span class="text-red-400">✕</span> ${msg}`;
+            box.classList.add('border-red-500/20');
+            box.innerHTML = `<div class="w-5 h-5 rounded-full bg-red-500/20 flex items-center justify-center text-red-400">✕</div> <span class="text-white/90">${msg}</span>`;
         } else {
-            box.classList.add('bg-blue-900/40', 'border-blue-500/30', 'text-blue-200');
-            box.innerHTML = `<span>ℹ️</span> ${msg}`;
+            box.classList.add('border-blue-500/20');
+            box.innerHTML = `<span class="text-blue-200">ℹ️ ${msg}</span>`;
         }
 
         document.body.appendChild(box);
         setTimeout(() => {
             box.style.opacity = '0';
-            box.style.transform = 'translate(-50%, -10px)';
-            setTimeout(() => box.remove(), 300);
-        }, 2000);
+            box.style.transform = 'translate(-50%, -20px) scale(0.95)';
+            setTimeout(() => box.remove(), 400);
+        }, 2500);
     },
 
     renderRecipes(recipes) {
@@ -212,62 +213,63 @@ export const ui = {
         const colorClass = isLiked ? 'text-red-500 stroke-red-500' : 'text-white/40';
 
         return `
-            <div class="glass-panel p-0 rounded-3xl relative overflow-hidden animate-reveal group mb-4" style="animation-delay: ${i * 0.1}s">
-                <div class="absolute inset-0 opacity-10 bg-gradient-to-br from-gold-500/20 via-purple-500/10 to-blue-500/20 group-hover:opacity-20 transition duration-700"></div>
+            <div class="glass-premium p-0 rounded-[2rem] relative overflow-hidden animate-reveal group mb-6" style="animation-delay: ${i * 0.15}s">
+                <!-- Ambient Glow -->
+                <div class="absolute top-0 right-0 w-64 h-64 bg-gold-500/10 rounded-full blur-[80px] -translate-y-1/2 translate-x-1/2 group-hover:bg-gold-500/20 transition duration-1000"></div>
+                <div class="absolute bottom-0 left-0 w-40 h-40 bg-purple-500/10 rounded-full blur-[50px] translate-y-1/2 -translate-x-1/2 group-hover:bg-purple-500/20 transition duration-1000"></div>
                 
-                <div class="p-6 relative z-10">
-                    <div class="flex justify-between items-start mb-6">
+                <div class="p-8 relative z-10">
+                    <!-- Header -->
+                    <div class="flex justify-between items-start mb-8">
                         <div>
-                            <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-gold-400/10 border border-gold-400/20 text-gold-400 text-[10px] font-bold uppercase tracking-wider mb-2">
-                                <span>✨ Синтез: ${Math.min(99, r.score)}%</span>
+                            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gold-400/5 border border-gold-400/10 backdrop-blur-md mb-3">
+                                <span class="w-1.5 h-1.5 rounded-full bg-gold-400 animate-pulse"></span>
+                                <span class="text-[9px] text-gold-300 font-bold uppercase tracking-widest">Match: ${Math.min(99, r.score)}%</span>
                             </div>
-                            <h3 class="text-white font-serif text-xl italic">${r.alchemy.occasion}</h3>
+                            <h3 class="text-white font-serif text-3xl italic leading-none text-gradient-gold">${r.alchemy.occasion}</h3>
                         </div>
-                        <button data-action="like" data-id="${r.id}" class="w-10 h-10 -mt-2 -mr-2 rounded-full flex items-center justify-center transition active:scale-90 hover:bg-white/5">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="${fill}" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="${colorClass} transition-colors duration-300 pointer-events-none"><path d="M19 14c1.49-1.28 3-4.34 3-6.53 0-3.02-2.63-5.47-5.63-5.47a5.57 5.57 0 0 0-3.95 2.5 5.57 5.57 0 0 0-3.95-2.5C5.63 2 3 4.45 3 7.47c0 2.19 1.51 5.25 3 6.53L12 21.6l7-7.6z"></path></svg>
+                        <button data-action="like" data-id="${r.id}" class="w-12 h-12 -mt-2 -mr-2 rounded-full flex items-center justify-center transition active:scale-90 hover:bg-white/5 group/btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="${fill}" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="${colorClass} transition-colors duration-300 group-hover/btn:scale-110"><path d="M19 14c1.49-1.28 3-4.34 3-6.53 0-3.02-2.63-5.47-5.63-5.47a5.57 5.57 0 0 0-3.95 2.5 5.57 5.57 0 0 0-3.95-2.5C5.63 2 3 4.45 3 7.47c0 2.19 1.51 5.25 3 6.53L12 21.6l7-7.6z"></path></svg>
                         </button>
                     </div>
 
-                    <div class="flex items-center justify-between mb-6">
-                        <div class="text-center w-1/3">
-                            <div class="text-[9px] text-white/30 uppercase mb-1">Ваша база</div>
-                            <div class="text-xs text-white font-medium truncate px-1">${r.base.name}</div>
+                    <!-- Ingredients -->
+                    <div class="flex items-center justify-between mb-8 relative">
+                        <!-- Line Connector -->
+                        <div class="absolute top-1/2 left-10 right-10 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+
+                        <div class="text-center relative z-10 bg-dark-900/10 backdrop-blur-sm px-2 rounded-lg">
+                            <div class="w-12 h-12 mx-auto rounded-2xl bg-white/5 border border-white/5 flex items-center justify-center mb-3 text-lg shadow-lg">🪵</div>
+                            <div class="text-[9px] text-white/30 uppercase tracking-widest mb-1">Основа</div>
+                            <div class="text-sm text-white font-serif truncate max-w-[100px]">${r.base.name}</div>
                         </div>
-                        <div class="relative w-1/3 flex justify-center">
-                            <div class="absolute inset-0 bg-gold-400 blur-xl opacity-20"></div>
-                            <div class="text-gold-400 font-serif text-2xl relative z-10">+</div>
+
+                        <div class="relative z-10 bg-dark-800 rounded-full w-8 h-8 flex items-center justify-center border border-gold-500/30 text-gold-400 font-serif shadow-[0_0_15px_rgba(212,175,55,0.2)]">
+                            +
                         </div>
-                        <div class="text-center w-1/3">
-                            <div class="text-[9px] text-gold-400/70 uppercase mb-1">Cлой №2</div>
-                            <div class="text-sm text-gold-400 font-serif italic truncate px-1">${r.addon.name}</div>
+
+                        <div class="text-center relative z-10 bg-dark-900/10 backdrop-blur-sm px-2 rounded-lg">
+                            <div class="w-12 h-12 mx-auto rounded-2xl bg-white/5 border border-white/5 flex items-center justify-center mb-3 text-lg shadow-lg">🌸</div>
+                            <div class="text-[9px] text-gold-400/60 uppercase tracking-widest mb-1">Слой</div>
+                            <div class="text-sm text-gold-400 font-serif italic truncate max-w-[100px]">${r.addon.name}</div>
                         </div>
                     </div>
 
-                    <div class="space-y-3">
-                        <div class="bg-white/5 rounded-xl p-3 border border-white/5 flex items-center justify-between">
-                            <div class="text-[10px] text-white/50">Соединение нот:</div>
-                            <div class="text-xs text-white font-mono flex items-center gap-2">
-                                <span>${r.alchemy.mix.split(' + ')[0]}</span>
-                                <span class="text-white/20">→</span>
-                                <span>${r.alchemy.mix.split(' + ')[1]}</span>
-                            </div>
+                    <!-- Description Box -->
+                    <div class="glass-panel p-5 rounded-2xl border-l-[3px] border-l-gold-500/50 mb-6">
+                        <div class="flex items-center gap-2 mb-3 opacity-60">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" class="stroke-gold-400"><path d="M2 12h20M12 2v20" stroke-width="2" stroke-linecap="round"/></svg>
+                            <span class="text-[9px] uppercase tracking-widest text-white">Эффект</span>
                         </div>
-                        
-                        <div class="bg-white/5 rounded-xl p-4 border border-white/5">
-                            <div class="flex items-center gap-2 mb-2">
-                                <span class="text-lg">🧪</span>
-                                <span class="text-[10px] uppercase text-gold-400 tracking-widest">Эффект наслоения</span>
-                            </div>
-                            <p class="text-xs text-white/80 leading-relaxed italic">
-                                "${r.alchemy.story}" <br>
-                                <span class="opacity-50 not-italic mt-1 block text-[10px] font-sans">Реакция: ${r.alchemy.effect}</span>
-                            </p>
-                        </div>
+                        <p class="text-sm text-white/80 leading-relaxed font-light">
+                            <span class="block mb-2 italic text-lg">"${r.alchemy.story}"</span>
+                            <span class="text-xs text-white/40 font-sans">Химия: ${r.alchemy.effect}</span>
+                        </p>
                     </div>
 
-                    <a href="#" class="mt-4 w-full py-3 bg-gold-500/10 hover:bg-gold-500/20 border border-gold-500/20 text-gold-400 rounded-xl text-xs uppercase tracking-widest font-semibold text-center block transition">
-                        Добавить в коллекцию
-                    </a>
+                    <button data-action="like" data-id="${r.id}" class="group w-full py-4 rounded-xl flex items-center justify-center gap-3 transition-all duration-300 ${isLiked ? 'bg-green-500/10 text-green-400 border border-green-500/20' : 'bg-gold-500/10 hover:bg-gold-500/20 border border-gold-500/20 text-gold-400 hover:shadow-[0_0_20px_rgba(212,175,55,0.1)]'}">
+                        <span class="text-xs uppercase tracking-[0.2em] font-semibold">${isLiked ? 'Сохранено' : 'Добавить'}</span>
+                    </button>
                 </div>
             </div>
         `;
