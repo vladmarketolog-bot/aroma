@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="ru" class="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>ScentMatrix</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,600;1,600&display=swap"
+        rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        gold: {
+                            400: '#D4AF37',
+                            500: '#C5A028',
+                            600: '#B08D22',
+                        },
+                        dark: {
+                            900: '#050505',
+                            800: '#0A0A0A',
+                            700: '#151515',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    },
+                    backgroundImage: {
+                        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+                        'glass': 'linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%)',
+                    },
+                    animation: {
+                        'reveal': 'reveal 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        reveal: {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        }
+                    },
+                    spacing: {
+                        'safe': 'env(safe-area-inset-bottom, 20px)'
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Link to Main CSS if we process it, but since we use Tailwind CDN config + raw CSS, we might just include styles inline or link -->
+    <!-- Ideally we link main.css, but with Tailwind CDN we need to be careful not to override classes unless we use @layer. 
+         For this prototype refactor, keeping the custom styles in main.css and importing it is standard. -->
+    <link rel="stylesheet" href="assets/css/main.css">
+</head>
+
+<body class="h-screen w-full overflow-hidden relative selection:bg-gold-500 selection:text-black">
+
+    <!-- Background Elements -->
+    <div class="fixed inset-0 z-[-1] pointer-events-none">
+        <div
+            class="absolute top-0 right-0 w-[500px] h-[500px] bg-gold-600/5 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/3">
+        </div>
+        <div
+            class="absolute bottom-0 left-0 w-[400px] h-[400px] bg-blue-900/5 rounded-full blur-[80px] translate-y-1/3 -translate-x-1/4">
+        </div>
+        <div
+            class="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03] mix-blend-overlay">
+        </div>
+    </div>
+
+    <!-- 1. Splash Screen -->
+    <div id="screen-splash" class="screen active fixed inset-0 flex-col items-center justify-center z-50 bg-dark-900">
+        <h1
+            class="font-serif text-5xl italic text-transparent bg-clip-text bg-gradient-to-tr from-gold-400 to-white mb-2 animate-reveal tracking-wide gold-glow">
+            ScentMatrix</h1>
+        <p class="text-[10px] uppercase tracking-[0.3em] text-white/40 animate-reveal" style="animation-delay: 0.2s;">
+            Olfactory Intelligence 2.0</p>
+    </div>
+
+    <!-- 2. Onboarding / Input -->
+    <div id="screen-input" class="screen fixed inset-0 flex-col z-40 p-6 overflow-y-auto pb-32">
+
+        <header class="flex justify-between items-center mb-6 pt-2">
+            <div class="font-serif italic text-gold-400 text-xl">SM.</div>
+            <div class="text-[10px] uppercase tracking-widest text-white/30">Beta v.27</div>
+        </header>
+
+        <!-- Value Prop -->
+        <div class="glass-panel p-5 rounded-2xl mb-8 border-l-2 border-l-gold-400 animate-reveal">
+            <h3 class="font-serif text-lg text-white mb-2">Зачем это нужно?</h3>
+            <p class="text-xs text-white/60 leading-relaxed">
+                Переверните игру. Вместо покупки очередного флакона, <span class="text-gold-400">создайте новый</span>,
+                наслоив то, что у вас уже есть, с одним новым "секретным ингредиентом". Экономия до 80% бюджета.
+            </p>
+        </div>
+
+        <!-- Celebrity Section -->
+        <section class="mb-10 animate-reveal" style="animation-delay: 0.05s;">
+            <div class="flex justify-between items-end mb-4 px-1">
+                <h2 class="font-serif text-2xl text-white">Выбор звёзд</h2>
+                <span class="text-[10px] text-gold-400 uppercase tracking-widest">Insider Secrets</span>
+            </div>
+
+            <div class="overflow-x-auto pb-4 -mx-6 px-6 custom-scrollbar flex gap-4 snap-x snap-mandatory">
+                <!-- Meghan -->
+                <div
+                    class="snap-center shrink-0 w-64 glass-panel p-4 rounded-2xl border border-white/5 relative group cursor-pointer hover:border-gold-400/30 transition">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-10 h-10 rounded-full bg-white/10 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=100"
+                                class="w-full h-full object-cover">
+                        </div>
+                        <div>
+                            <div class="text-sm font-serif text-white">Meghan Markle</div>
+                            <div class="text-[9px] text-white/40 uppercase">English Garden vibe</div>
+                        </div>
+                    </div>
+                    <div class="space-y-2 text-[10px] text-white/70">
+                        <div class="flex items-center gap-2 bg-white/5 p-1.5 rounded-lg">
+                            <span class="w-1.5 h-1.5 rounded-full bg-blue-400"></span> Wild Bluebell
+                        </div>
+                        <div class="flex justify-center text-gold-400 text-xs">+</div>
+                        <div class="flex items-center gap-2 bg-white/5 p-1.5 rounded-lg">
+                            <span class="w-1.5 h-1.5 rounded-full bg-teal-400"></span> Wood Sage & Sea Salt
+                        </div>
+                    </div>
+                    <p class="mt-3 text-[10px] italic text-white/50 leading-tight">"Английский сад у моря.
+                        Интеллигентный, аристократичный шлейф."</p>
+                </div>
+                <!-- Add other celebs here (truncated for brevity, logic remains same) -->
+                <!-- Rihanna -->
+                <div
+                    class="snap-center shrink-0 w-64 glass-panel p-4 rounded-2xl border border-white/5 relative group cursor-pointer hover:border-gold-400/30 transition">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-10 h-10 rounded-full bg-white/10 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1531123897727-8f129e1688ce?auto=format&fit=crop&q=80&w=100"
+                                class="w-full h-full object-cover">
+                        </div>
+                        <div>
+                            <div class="text-sm font-serif text-white">Rihanna</div>
+                            <div class="text-[9px] text-white/40 uppercase">Gourmand Queen</div>
+                        </div>
+                    </div>
+                    <div class="space-y-2 text-[10px] text-white/70">
+                        <div class="flex items-center gap-2 bg-white/5 p-1.5 rounded-lg">
+                            <span class="w-1.5 h-1.5 rounded-full bg-pink-500"></span> Love, Don’t Be Shy
+                        </div>
+                        <div class="flex justify-center text-gold-400 text-xs">+</div>
+                        <div class="flex items-center gap-2 bg-white/5 p-1.5 rounded-lg">
+                            <span class="w-1.5 h-1.5 rounded-full bg-red-400"></span> Rolling in Love
+                        </div>
+                    </div>
+                    <p class="mt-3 text-[10px] italic text-white/50 leading-tight">"Запах ангельских сладостей.
+                        Маршмэллоу и миндальное молоко."</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Step 1: My Wardrobe -->
+        <section class="mb-10 animate-reveal" style="animation-delay: 0.1s;">
+            <h2 class="font-serif text-2xl text-white mb-2">Ваша база</h2>
+            <p class="text-xs text-white/50 mb-4">Ведите название ароматов вашего гардероба:</p>
+
+            <div class="relative group mb-4">
+                <input type="text" id="perfume-search" placeholder="Например: Santal 33..."
+                    class="w-full bg-dark-800 text-sm p-4 pl-12 rounded-xl border border-white/10 focus:border-gold-500/50 outline-none transition placeholder:text-white/20">
+                <span class="absolute left-4 top-1/2 -translate-y-1/2 text-white/20">
+                    <svg width="18" height="18" fill="none">
+                        <path
+                            d="M16.5 16.5L12.875 12.875M14.8333 8.16667C14.8333 11.8486 11.8486 14.8333 8.16667 14.8333C4.48477 14.8333 1.5 11.8486 1.5 8.16667C1.5 4.48477 4.48477 1.5 8.16667 1.5C11.8486 1.5 14.8333 4.48477 14.8333 8.16667Z"
+                            stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                </span>
+
+                <div id="search-results"
+                    class="hidden absolute top-full left-0 right-0 mt-2 bg-[#1A1A1A] border border-white/10 rounded-xl max-h-48 overflow-y-auto z-50 cinematic-shadow">
+                </div>
+            </div>
+
+            <div id="wardrobe-chips" class="flex flex-wrap gap-2 min-h-[40px]"></div>
+        </section>
+
+        <!-- Step 2: Vibe Selector -->
+        <section class="mb-12 animate-reveal" style="animation-delay: 0.2s;">
+            <h2 class="font-serif text-2xl text-white mb-2">Задача на сегодня</h2>
+            <p class="text-xs text-white/50 mb-4">Какой эффект вы хотите произвести?</p>
+
+            <div class="grid grid-cols-2 gap-2">
+                <!-- Vibe Cards generated by JS -->
+            </div>
+            <input type="hidden" id="selected-vibe">
+        </section>
+
+    </div>
+
+    <!-- Main Result Button -->
+    <div id="fab-container"
+        class="fixed bottom-[5.5rem] left-0 right-0 px-6 z-50 pointer-events-none transition-all duration-500 translate-y-20 opacity-0">
+        <button onclick="startSynthesis()"
+            class="w-full py-4 bg-gradient-to-r from-gold-500 to-gold-400 text-black font-serif font-bold italic text-lg rounded-2xl pointer-events-auto shadow-lg shadow-gold-400/20 active:scale-95 transition-all flex items-center justify-center gap-3">
+            <span>Синтезировать Рецепт</span>
+            <span class="text-xl">✨</span>
+        </button>
+    </div>
+
+    <!-- 3. Processing Screen -->
+    <div id="screen-processing"
+        class="screen fixed inset-0 flex-col items-center justify-center z-50 bg-dark-900/95 backdrop-blur-xl">
+        <div class="relative w-40 h-40 mb-8">
+            <div class="absolute inset-0 bg-gold-500/10 rounded-full animate-pulse-slow"></div>
+            <!-- Fluid Animation Mockup -->
+            <div class="absolute inset-0 flex items-center justify-center">
+                <div class="w-16 h-16 border-2 border-gold-400 rounded-full animate-spin border-t-transparent"></div>
+                <div class="absolute w-10 h-10 bg-gold-500 rounded-full blur-xl opacity-50 animate-pulse"></div>
+            </div>
+        </div>
+        <p class="font-serif italic text-2xl text-white mb-2">Поиск связей...</p>
+        <div id="processing-log" class="text-xs text-gold-500/60 font-mono"></div>
+    </div>
+
+    <!-- 4. Result Screen -->
+    <div id="screen-result" class="screen fixed inset-0 flex-col z-40 bg-[#080808] overflow-y-auto pb-32">
+
+        <div
+            class="sticky top-0 bg-dark-900/80 backdrop-blur-md p-6 border-b border-white/5 z-20 flex justify-between items-center">
+            <h2 class="font-serif text-xl italic text-white/90">Ваши рецепты</h2>
+            <button onclick="resetApp()"
+                class="text-xs text-white/40 uppercase tracking-widest hover:text-white">Сброс</button>
+        </div>
+
+        <div id="recipes-container" class="p-6 space-y-6">
+            <!-- Recipe Cards injected here -->
+        </div>
+
+    </div>
+
+    <!-- 5. Favorites Screen -->
+    <div id="screen-favorites" class="screen fixed inset-0 flex-col z-40 bg-dark-900 pb-24 overflow-y-auto">
+        <header class="p-6 pb-2 sticky top-0 bg-dark-900/95 backdrop-blur z-20 border-b border-white/5">
+            <h2 class="font-serif text-2xl text-white">Коллекция</h2>
+            <p class="text-xs text-white/50">Сохраненные рецепты</p>
+        </header>
+        <div id="favorites-container" class="p-6 space-y-4">
+            <!-- Empty State -->
+            <div class="text-center py-20 opacity-30">
+                <div class="text-4xl mb-2">🧪</div>
+                <p class="text-sm">Пока пусто</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 6. Profile Screen (Stub) -->
+    <div id="screen-profile" class="screen fixed inset-0 flex-col z-40 bg-dark-900 flex items-center justify-center">
+        <div class="text-center opacity-50">
+            <div class="text-4xl mb-4">👤</div>
+            <p>Профиль пользователя</p>
+            <p class="text-xs mt-2">Скоро...</p>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <nav class="fixed bottom-0 left-0 right-0 bg-dark-900/90 backdrop-blur-xl border-t border-white/5 z-50 pb-safe">
+        <div class="flex justify-around items-center h-16">
+            <button data-target="input" onclick="switchTab('input')" id="nav-create"
+                class="nav-btn active flex flex-col items-center gap-1 w-1/3 text-white/30 hover:text-white transition group relative focus:outline-none">
+                <div
+                    class="absolute -top-px left-1/2 -translate-x-1/2 w-8 h-0.5 bg-gold-400 opacity-0 transition group-[.active]:opacity-100 shadow-[0_0_10px_#D4AF37]">
+                </div>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                    class="stroke-current group-[.active]:text-gold-400 transition" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 5v14M5 12h14" />
+                </svg>
+                <span class="text-[9px] font-medium tracking-wide group-[.active]:text-gold-400">СОЗДАТЬ</span>
+            </button>
+
+            <button data-target="favorites" onclick="switchTab('favorites')" id="nav-fav"
+                class="nav-btn flex flex-col items-center gap-1 w-1/3 text-white/30 hover:text-white transition group relative focus:outline-none">
+                <div
+                    class="absolute -top-px left-1/2 -translate-x-1/2 w-8 h-0.5 bg-gold-400 opacity-0 transition group-[.active]:opacity-100 shadow-[0_0_10px_#D4AF37]">
+                </div>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                    class="stroke-current group-[.active]:text-gold-400 transition" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path
+                        d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+                </svg>
+                <span class="text-[9px] font-medium tracking-wide group-[.active]:text-gold-400">КОЛЛЕКЦИЯ</span>
+            </button>
+
+            <button data-target="profile" onclick="switchTab('profile')" id="nav-profile"
+                class="nav-btn flex flex-col items-center gap-1 w-1/3 text-white/30 hover:text-white transition group relative focus:outline-none">
+                <div
+                    class="absolute -top-px left-1/2 -translate-x-1/2 w-8 h-0.5 bg-gold-400 opacity-0 transition group-[.active]:opacity-100 shadow-[0_0_10px_#D4AF37]">
+                </div>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                    class="stroke-current group-[.active]:text-gold-400 transition" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+                <span class="text-[9px] font-medium tracking-wide group-[.active]:text-gold-400">ПРОФИЛЬ</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main JS Application -->
+    <script type="module" src="assets/js/app.js"></script>
+
+</body>
+
+</html>
