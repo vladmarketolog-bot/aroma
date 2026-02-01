@@ -1,5 +1,5 @@
-import { state } from './state.js';
-import { vibes } from './db.js';
+import { state } from './state.js?v=4';
+import { vibes } from './db.js?v=4';
 
 export const ui = {
     init() {
@@ -43,39 +43,12 @@ export const ui = {
     },
 
     renderWardrobe() {
+        // Implementation is currently handled by app.js (renderWardrobeChips)
+        // or delegated. Keeping this empty to prevent conflicts.
         const container = document.getElementById('wardrobe-chips');
-        if (!container) return;
-
-        if (state.wardrobe.length === 0) {
-            container.innerHTML = `<div class="w-full text-center py-4 border border-dashed border-white/10 rounded-xl text-[10px] text-white/30">Ваш гардероб пуст. Добавьте ароматы выше.</div>`;
-            return;
+        if (container && state.wardrobe.length === 0) {
+            container.innerHTML = `<div class="w-full text-center py-4 border border-dashed border-white/10 rounded-xl text-[10px] text-white/30 animate-reveal">Ваш гардероб пуст. Добавьте ароматы выше.</div>`;
         }
-
-        // Need to import perfumeDB to resolve names. 
-        // We can attach it to the ui object or window for now, or just trust app.js passes it?
-        // Actually, importing it here is cleaner as per ES modules.
-        // We already imported 'vibes', let's fix imports at top of file.
-        // Assuming imports are fixed, we proceed.
-        // Note: We need to import perfumeDB at the top of ui.js
-
-        container.innerHTML = '';
-        state.wardrobe.forEach(id => {
-            // Access perfumeDB from global or import. 
-            // Since we can't easily change imports with replace_file (it's at top), 
-            // we will assume app.js exposes it or we fetch it from a helper.
-            // Let's rely on a helper 'getPerfumeById' which we need to import or have available.
-            // TEMPORARY: We will dispatch a custom event or callback?
-            // BETTER: We will ask state to give us full objects? 
-            // Let's just assume we can get it via `state.getPerfume(id)` if we add that to state?
-            // Or we just re-import at the top.
-        });
-        // Wait, renderWardrobe is actually implemented in app.js in my previous turn! 
-        // "function renderWardrobeChips() { ... }" inside app.js.
-        // ui.js had `renderWardrobe() { // We need perfume data... }` which was empty.
-        // I should DELETE the empty function here or make app.js call ui.renderWardrobe(wardrobeList).
-
-        // Let's stick to the pattern: `app.js` handles data -> `ui.js` rendering.
-        // So `ui.renderWardrobe(items)` is better.
     },
 
     renderProfile() {

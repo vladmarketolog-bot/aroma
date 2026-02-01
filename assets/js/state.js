@@ -12,9 +12,16 @@ export class State {
     load() {
         const saved = localStorage.getItem('scentmatrix_state');
         if (saved) {
-            const parsed = JSON.parse(saved);
-            this.wardrobe = parsed.wardrobe || [];
-            this.favorites = parsed.favorites || [];
+            try {
+                const parsed = JSON.parse(saved);
+                this.wardrobe = parsed.wardrobe || [];
+                this.favorites = parsed.favorites || [];
+            } catch (e) {
+                console.error("Failed to parse state:", e);
+                // Reset or ignore corrupted state
+                this.wardrobe = [];
+                this.favorites = [];
+            }
             // We don't load 'vibe' or 'recipes' to allow a fresh start, 
             // but we could if we wanted to restore session.
             // For now, let's keep wardrobe and favorites as persistent.
