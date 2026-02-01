@@ -71,49 +71,59 @@ export const ui = {
         // Or just show counts for now.
 
         container.innerHTML = `
-            <div class="w-full h-full overflow-y-auto pb-32 bg-dark-900">
-                <header class="p-6 sticky top-0 bg-dark-900/95 backdrop-blur z-20 border-b border-white/5 flex justify-between items-center">
-                    <h2 class="font-serif text-2xl text-white">Профиль</h2>
-                </header>
+            <div class="w-full h-full overflow-y-auto pb-32">
+                <!-- Header Card -->
+                <div class="sticky top-0 m-4 p-5 rounded-[2rem] glass-premium z-20 mb-8 relative overflow-hidden group">
+                     <div class="absolute inset-0 bg-gradient-to-br from-gold-500/10 to-purple-500/10 opacity-50 group-hover:opacity-100 transition duration-700"></div>
+                     <div class="absolute -top-10 -right-10 w-32 h-32 bg-gold-400/20 rounded-full blur-2xl"></div>
 
-                <div class="p-6">
-                    <!-- User Card -->
-                    <div class="flex items-center gap-4 mb-8">
-                        <div class="w-20 h-20 rounded-full overflow-hidden border-2 border-gold-400 p-1">
-                            <div class="w-full h-full rounded-full overflow-hidden bg-white/10">
+                    <div class="relative z-10 flex items-center gap-5">
+                        <div class="w-20 h-20 rounded-full p-[2px] bg-gradient-to-tr from-gold-300 to-transparent">
+                             <div class="w-full h-full rounded-full overflow-hidden bg-dark-900 border border-black relative">
                                 ${avatarHTML}
-                            </div>
+                             </div>
                         </div>
                         <div>
-                            <h3 class="text-xl text-white font-serif">${user.first_name}</h3>
-                            <p class="text-xs text-white/50 uppercase tracking-widest">Master Blender</p>
+                            <h3 class="text-2xl text-white font-serif italic">${user.first_name}</h3>
+                            <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 mt-2 rounded-full bg-white/5 border border-white/5">
+                                <span class="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse"></span>
+                                <span class="text-[9px] text-white/50 uppercase tracking-widest">Online</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="px-6">
+                    <!-- Stats Grid -->
+                    <h4 class="text-[10px] text-white/30 uppercase tracking-[0.2em] mb-4 pl-2">Статистика</h4>
+                    <div class="grid grid-cols-2 gap-4 mb-10">
+                        <div class="glass-premium p-5 rounded-3xl flex flex-col items-center justify-center gap-1 group hover:bg-white/5 transition">
+                            <div class="text-3xl text-gold-300 font-serif group-hover:scale-110 transition duration-300">${wardrobeCount}</div>
+                            <div class="text-[9px] text-white/40 uppercase tracking-widest text-center">Ароматов<br>в базе</div>
+                        </div>
+                        <div class="glass-premium p-5 rounded-3xl flex flex-col items-center justify-center gap-1 group hover:bg-white/5 transition">
+                            <div class="text-3xl text-white font-serif group-hover:scale-110 transition duration-300">${favCount}</div>
+                            <div class="text-[9px] text-white/40 uppercase tracking-widest text-center">Избранных<br>рецептов</div>
                         </div>
                     </div>
 
-                    <!-- Stats Cloud -->
-                    <div class="grid grid-cols-2 gap-3 mb-8">
-                        <div class="bg-white/5 rounded-xl p-4 border border-white/5">
-                            <div class="text-3xl text-gold-400 font-serif mb-1">${wardrobeCount}</div>
-                            <div class="text-[10px] text-white/40 uppercase tracking-widest">В гардеробе</div>
-                        </div>
-                        <div class="bg-white/5 rounded-xl p-4 border border-white/5">
-                            <div class="text-3xl text-white font-serif mb-1">${favCount}</div>
-                            <div class="text-[10px] text-white/40 uppercase tracking-widest">Cохранено</div>
-                        </div>
-                    </div>
-
-                    <!-- Settings -->
-                    <div class="space-y-4">
-                        <h4 class="text-xs text-white/30 uppercase tracking-widest mb-4">Настройки</h4>
-                        
-                        <button onclick="window.fullReset()" class="w-full flex items-center justify-between p-4 rounded-xl bg-white/5 border border-white/5 hover:bg-red-500/10 hover:border-red-500/30 group transition">
-                            <span class="text-sm text-white/70 group-hover:text-red-400">Сбросить данные</span>
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="stroke-white/30 group-hover:stroke-red-400"><path d="M19 7l-.867 12.142A2 2 0 0 1 16.138 21H7.862a2 2 0 0 1-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v3M4 7h16" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    <!-- Actions -->
+                    <h4 class="text-[10px] text-white/30 uppercase tracking-[0.2em] mb-4 pl-2">Управление</h4>
+                    <div class="space-y-3">
+                        <button onclick="window.fullReset()" class="w-full p-4 rounded-2xl glass-premium flex items-center justify-between group hover:border-red-500/30 transition">
+                            <div class="flex items-center gap-4">
+                                <div class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-red-500/10 transition">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" class="stroke-white/50 group-hover:stroke-red-400 transition"><path d="M19 7l-.867 12.142A2 2 0 0 1 16.138 21H7.862a2 2 0 0 1-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v3M4 7h16" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                </div>
+                                <span class="text-sm text-white/60 group-hover:text-red-300 transition text-left">Сбросить<br>все данные</span>
+                            </div>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" class="stroke-white/20 -rotate-90 group-hover:translate-x-1 transition"><path d="M6 9l6 6 6-6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
                         </button>
-                        
-                        <div class="text-center mt-8">
-                            <p class="text-[10px] text-white/20">ScentMatrix v1.0.2</p>
-                        </div>
+                    </div>
+
+                    <div class="text-center mt-12 mb-8">
+                        <div class="w-12 h-1 bg-white/5 mx-auto rounded-full mb-4"></div>
+                        <p class="text-[10px] text-white/20 tracking-widest">SCENTMATRIX v3.0 // BETA</p>
                     </div>
                 </div>
             </div>
@@ -155,7 +165,7 @@ export const ui = {
 
         // Fab visibility
         const fab = document.getElementById('fab-container');
-        if (id === 'input' || id === 'result') {
+        if (id === 'input') {
             this.updateFab();
         } else {
             fab.classList.add('translate-y-40', 'opacity-0');
@@ -241,7 +251,8 @@ export const ui = {
                         <div class="text-center relative z-10 bg-dark-900/10 backdrop-blur-sm px-2 rounded-lg">
                             <div class="w-12 h-12 mx-auto rounded-2xl bg-white/5 border border-white/5 flex items-center justify-center mb-3 text-lg shadow-lg">🪵</div>
                             <div class="text-[9px] text-white/30 uppercase tracking-widest mb-1">Основа</div>
-                            <div class="text-sm text-white font-serif truncate max-w-[100px]">${r.base.name}</div>
+                            <div class="text-sm text-white font-serif truncate max-w-[100px] leading-tight">${r.base.name}</div>
+                            <div class="text-[8px] text-white/40 uppercase tracking-wider truncate max-w-[100px] mt-1">${r.base.brand}</div>
                         </div>
 
                         <div class="relative z-10 bg-dark-800 rounded-full w-8 h-8 flex items-center justify-center border border-gold-500/30 text-gold-400 font-serif shadow-[0_0_15px_rgba(212,175,55,0.2)]">
@@ -251,7 +262,8 @@ export const ui = {
                         <div class="text-center relative z-10 bg-dark-900/10 backdrop-blur-sm px-2 rounded-lg">
                             <div class="w-12 h-12 mx-auto rounded-2xl bg-white/5 border border-white/5 flex items-center justify-center mb-3 text-lg shadow-lg">🌸</div>
                             <div class="text-[9px] text-gold-400/60 uppercase tracking-widest mb-1">Слой</div>
-                            <div class="text-sm text-gold-400 font-serif italic truncate max-w-[100px]">${r.addon.name}</div>
+                            <div class="text-sm text-gold-400 font-serif italic truncate max-w-[100px] leading-tight">${r.addon.name}</div>
+                            <div class="text-[8px] text-gold-400/40 uppercase tracking-wider truncate max-w-[100px] mt-1">${r.addon.brand}</div>
                         </div>
                     </div>
 

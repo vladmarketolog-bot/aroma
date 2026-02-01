@@ -167,15 +167,15 @@
         </section>
 
         <!-- Step 1: My Wardrobe -->
-        <section class="mb-10 animate-reveal" style="animation-delay: 0.1s;">
+        <section class="mb-10 animate-reveal relative z-30" style="animation-delay: 0.1s;">
             <h2 class="font-serif text-2xl text-white mb-2">Ваша база</h2>
             <p class="text-xs text-white/50 mb-4">Ведите название ароматов вашего гардероба:</p>
 
             <div class="relative group mb-4">
                 <input type="text" id="perfume-search" placeholder="Например: Santal 33..."
-                    class="w-full bg-dark-800 text-sm p-4 pl-12 rounded-xl border border-white/10 focus:border-gold-500/50 outline-none transition placeholder:text-white/20">
-                <span class="absolute left-4 top-1/2 -translate-y-1/2 text-white/20">
-                    <svg width="18" height="18" fill="none">
+                    class="w-full bg-white/5 text-sm p-4 pl-12 rounded-2xl border border-white/10 focus:border-gold-500/50 outline-none transition placeholder:text-white/20 backdrop-blur-sm">
+                <span class="absolute left-4 top-1/2 -translate-y-1/2 text-white/30">
+                    <svg width="20" height="20" fill="none" viewBox="0 0 24 24">
                         <path
                             d="M16.5 16.5L12.875 12.875M14.8333 8.16667C14.8333 11.8486 11.8486 14.8333 8.16667 14.8333C4.48477 14.8333 1.5 11.8486 1.5 8.16667C1.5 4.48477 4.48477 1.5 8.16667 1.5C11.8486 1.5 14.8333 4.48477 14.8333 8.16667Z"
                             stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
@@ -183,7 +183,7 @@
                 </span>
 
                 <div id="search-results"
-                    class="hidden absolute top-full left-0 right-0 mt-2 bg-[#1A1A1A] border border-white/10 rounded-xl max-h-48 overflow-y-auto z-50 cinematic-shadow">
+                    class="hidden absolute top-full left-0 right-0 mt-4 glass-premium rounded-2xl max-h-60 overflow-y-auto z-50 cinematic-shadow">
                 </div>
             </div>
 
@@ -191,7 +191,7 @@
         </section>
 
         <!-- Step 2: Vibe Selector -->
-        <section class="mb-12 animate-reveal" style="animation-delay: 0.2s;">
+        <section class="mb-12 animate-reveal relative z-20" style="animation-delay: 0.2s;">
             <h2 class="font-serif text-2xl text-white mb-2">Задача на сегодня</h2>
             <p class="text-xs text-white/50 mb-4">Какой эффект вы хотите произвести?</p>
 
@@ -215,56 +215,69 @@
 
     <!-- 3. Processing Screen -->
     <div id="screen-processing"
-        class="screen fixed inset-0 flex-col items-center justify-center z-50 bg-dark-900/95 backdrop-blur-xl">
-        <div class="relative w-40 h-40 mb-8">
-            <div class="absolute inset-0 bg-gold-500/10 rounded-full animate-pulse-slow"></div>
+        class="screen fixed inset-0 flex-col items-center justify-center z-50 bg-black/60 backdrop-blur-2xl">
+        <div class="relative w-48 h-48 mb-6">
+            <div class="absolute inset-0 bg-gold-500/10 rounded-full animate-pulse-slow blur-xl"></div>
             <!-- Fluid Animation Mockup -->
             <div class="absolute inset-0 flex items-center justify-center">
-                <div class="w-16 h-16 border-2 border-gold-400 rounded-full animate-spin border-t-transparent"></div>
-                <div class="absolute w-10 h-10 bg-gold-500 rounded-full blur-xl opacity-50 animate-pulse"></div>
+                <div
+                    class="w-24 h-24 border border-gold-400/30 rounded-full animate-spin border-t-gold-400 shadow-[0_0_30px_rgba(212,175,55,0.2)]">
+                </div>
+                <div class="absolute w-16 h-16 bg-gold-400/20 rounded-full blur-xl animate-pulse"></div>
             </div>
         </div>
-        <p class="font-serif italic text-2xl text-white mb-2">Поиск связей...</p>
-        <div id="processing-log" class="text-xs text-gold-500/60 font-mono"></div>
+        <p class="font-serif italic text-3xl text-white mb-3 text-gradient-gold">Синтез...</p>
+        <div id="processing-log" class="text-[10px] uppercase tracking-[0.2em] text-white/40 font-mono"></div>
     </div>
 
     <!-- 4. Result Screen -->
-    <div id="screen-result" class="screen fixed inset-0 flex-col z-40 bg-[#080808] overflow-y-auto pb-32">
+    <div id="screen-result"
+        class="screen fixed inset-0 flex-col z-40 bg-dark-900/30 backdrop-blur-sm overflow-y-auto pb-32">
 
-        <div
-            class="sticky top-0 bg-dark-900/80 backdrop-blur-md p-6 border-b border-white/5 z-20 flex justify-between items-center">
+        <div class="sticky top-0 m-4 p-4 rounded-2xl glass-premium z-20 flex justify-between items-center mb-6">
+            <button onclick="ui.switchScreen('input')"
+                class="flex items-center gap-2 text-white/50 hover:text-white transition group">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                    class="stroke-current group-hover:-translate-x-1 transition">
+                    <path d="M15 18l-6-6 6-6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                <span class="text-[10px] uppercase tracking-widest">Назад</span>
+            </button>
             <h2 class="font-serif text-xl italic text-white/90">Ваши рецепты</h2>
-            <button onclick="resetApp()"
-                class="text-xs text-white/40 uppercase tracking-widest hover:text-white">Сброс</button>
+            <div class="w-8"></div>
         </div>
 
-        <div id="recipes-container" class="p-6 space-y-6">
+        <div id="recipes-container" class="px-6 pb-6 space-y-6">
             <!-- Recipe Cards injected here -->
         </div>
 
     </div>
 
     <!-- 5. Favorites Screen -->
-    <div id="screen-favorites" class="screen fixed inset-0 flex-col z-40 bg-dark-900 pb-24 overflow-y-auto">
-        <header class="p-6 pb-2 sticky top-0 bg-dark-900/95 backdrop-blur z-20 border-b border-white/5">
-            <h2 class="font-serif text-2xl text-white">Коллекция</h2>
-            <p class="text-xs text-white/50">Сохраненные рецепты</p>
-        </header>
-        <div id="favorites-container" class="p-6 space-y-4">
+    <div id="screen-favorites"
+        class="screen fixed inset-0 flex-col z-40 bg-dark-900/30 backdrop-blur-sm pb-24 overflow-y-auto">
+        <div class="sticky top-0 m-4 p-5 rounded-2xl glass-premium z-20 mb-6 flex justify-between items-center">
+            <div>
+                <h2 class="font-serif text-2xl text-white">Коллекция</h2>
+                <p class="text-[10px] text-white/40 uppercase tracking-widest mt-1">Избранные формулы</p>
+            </div>
+            <div class="text-2xl">💎</div>
+        </div>
+
+        <div id="favorites-container" class="px-6 space-y-4">
             <!-- Empty State -->
             <div class="text-center py-20 opacity-30">
-                <div class="text-4xl mb-2">🧪</div>
-                <p class="text-sm">Пока пусто</p>
+                <div class="text-4xl mb-4 grayscale">🧪</div>
+                <p class="text-sm font-light">Коллекция пуста</p>
             </div>
         </div>
     </div>
 
     <!-- 6. Profile Screen (Stub) -->
-    <div id="screen-profile" class="screen fixed inset-0 flex-col z-40 bg-dark-900 flex items-center justify-center">
-        <div class="text-center opacity-50">
-            <div class="text-4xl mb-4">👤</div>
-            <p>Профиль пользователя</p>
-            <p class="text-xs mt-2">Скоро...</p>
+    <div id="screen-profile" class="screen fixed inset-0 flex-col z-40 bg-dark-900/30 backdrop-blur-md">
+        <!-- Injected via JS -->
+        <div class="flex items-center justify-center h-full">
+            <div class="animate-pulse text-white/20">Загрузка профиля...</div>
         </div>
     </div>
 

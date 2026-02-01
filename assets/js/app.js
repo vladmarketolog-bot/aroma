@@ -2,6 +2,8 @@ import { state } from './state.js?v=4';
 import { perfumeDB, alchemyStories, alchemyEffects, celebrities } from './db.js?v=4';
 import { ui } from './ui.js?v=4';
 
+window.ui = ui;
+
 // --- CONTROLLER ---
 
 // 1. Initialization
@@ -144,12 +146,14 @@ function setupEventListeners() {
 
             if (matches.length > 0) {
                 resultsBox.innerHTML = matches.map(p => `
-                    <div class="px-4 py-3 hover:bg-white/5 cursor-pointer flex justify-between items-center group transition" data-add-id="${p.id}">
+                    <div class="px-5 py-4 hover:bg-white/5 cursor-pointer flex justify-between items-center group transition active:bg-white/10" data-add-id="${p.id}">
                         <div>
-                            <div class="text-sm text-white group-hover:text-gold-400 transition font-medium">${p.name}</div>
-                            <div class="text-[10px] text-white/40 group-hover:text-white/60">${p.brand}</div>
+                            <div class="text-base text-white group-hover:text-gold-400 transition font-serif italic">${p.name}</div>
+                            <div class="text-[10px] text-white/30 uppercase tracking-widest group-hover:text-white/50">${p.brand}</div>
                         </div>
-                        <div class="text-xs text-gold-400 opacity-0 group-hover:opacity-100 transition transform translate-x-2 group-hover:translate-x-0">+</div>
+                        <div class="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center text-gold-400 opacity-0 group-hover:opacity-100 transition transform translate-x-4 group-hover:translate-x-0">
+                            <span class="text-lg leading-none">+</span>
+                        </div>
                     </div>
                 `).join('');
 
@@ -232,10 +236,16 @@ function renderCelebrities() {
                 
                 <p class="text-xs text-white/60 font-light leading-relaxed mb-4 line-clamp-2">"${celeb.quote}"</p>
                 
-                <div class="flex items-center gap-2 text-[10px] text-white/40 uppercase tracking-widest">
-                    <span>${celeb.mix[0].name}</span>
-                    <span class="text-gold-400">+</span>
-                    <span>${celeb.mix[1].name}</span>
+                <div class="grid grid-cols-[1fr_auto_1fr] gap-3 items-center w-full mt-2 border-t border-white/5 pt-3">
+                    <div class="text-left overflow-hidden">
+                        <div class="text-[10px] text-white font-bold truncate tracking-widest uppercase">${celeb.mix[0].name}</div>
+                        <div class="text-[8px] text-white/50 truncate uppercase tracking-wider mt-0.5">${celeb.mix[0].brand}</div>
+                    </div>
+                    <div class="text-gold-400 font-serif text-lg italic">+</div>
+                    <div class="text-right overflow-hidden">
+                        <div class="text-[10px] text-white font-bold truncate tracking-widest uppercase">${celeb.mix[1].name}</div>
+                        <div class="text-[8px] text-white/50 truncate uppercase tracking-wider mt-0.5">${celeb.mix[1].brand}</div>
+                    </div>
                 </div>
             </div>
         </div>

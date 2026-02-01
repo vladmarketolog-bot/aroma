@@ -229,8 +229,8 @@ export const celebrities = [
         vibe: "English Garden",
         image: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Meghan_Markle_2018.jpg/800px-Meghan_Markle_2018.jpg",
         mix: [
-            { name: "Wild Bluebell", color: "bg-blue-400" },
-            { name: "Wood Sage & Sea Salt", color: "bg-teal-400" }
+            { name: "Wild Bluebell", brand: "Jo Malone London", color: "bg-blue-400" },
+            { name: "Wood Sage & Sea Salt", brand: "Jo Malone London", color: "bg-teal-400" }
         ],
         quote: "Английский сад у моря. Интеллигентный, аристократичный шлейф."
     },
@@ -239,8 +239,8 @@ export const celebrities = [
         vibe: "Gourmand Queen",
         image: "https://upload.wikimedia.org/wikipedia/commons/c/c2/Rihanna_Fenty_2017_cropped.jpg",
         mix: [
-            { name: "Love, Don't Be Shy", color: "bg-pink-500" },
-            { name: "Rolling in Love", color: "bg-red-400" }
+            { name: "Love, Don't Be Shy", brand: "Kilian", color: "bg-pink-500" },
+            { name: "Rolling in Love", brand: "Kilian", color: "bg-red-400" }
         ],
         quote: "Запах ангельских сладостей. Маршмэллоу и миндальное молоко."
     },
@@ -249,8 +249,8 @@ export const celebrities = [
         vibe: "It-Girl Clean",
         image: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Hailey_Bieber_2020.jpg/640px-Hailey_Bieber_2020.jpg",
         mix: [
-            { name: "Fleur Narcotique", color: "bg-purple-400" },
-            { name: "Baccarat Rouge 540", color: "bg-red-600" }
+            { name: "Fleur Narcotique", brand: "Ex Nihilo", color: "bg-purple-400" },
+            { name: "Baccarat Rouge 540", brand: "MFK", color: "bg-red-600" }
         ],
         quote: "Идеальный баланс чистоты и сексуальности. Сводит с ума."
     },
@@ -259,8 +259,8 @@ export const celebrities = [
         vibe: "Dark Cocoa",
         image: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/Billie_Eilish_at_Global_Gitizen_Live_in_Central_Park_%2851505353846%29_%28cropped%29.jpg/640px-Billie_Eilish_at_Global_Gitizen_Live_in_Central_Park_%2851505353846%29_%28cropped%29.jpg",
         mix: [
-            { name: "Chocolate Greedy", color: "bg-amber-700" },
-            { name: "Tobacco Vanille", color: "bg-yellow-600" }
+            { name: "Chocolate Greedy", brand: "Montale", color: "bg-amber-700" },
+            { name: "Tobacco Vanille", brand: "Tom Ford", color: "bg-yellow-600" }
         ],
         quote: "Уютный, темный оверсайз. Ваниль, табак и горячий шоколад."
     },
@@ -269,8 +269,8 @@ export const celebrities = [
         vibe: "Artsy Boy",
         image: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Timoth%C3%A9e_Chalamet_Cannes_2021.jpg/640px-Timoth%C3%A9e_Chalamet_Cannes_2021.jpg",
         mix: [
-            { name: "Santal 33", color: "bg-emerald-400" },
-            { name: "Encre Noire", color: "bg-black" }
+            { name: "Santal 33", brand: "Le Labo", color: "bg-emerald-400" },
+            { name: "Encre Noire", brand: "Lalique", color: "bg-black" }
         ],
         quote: "Запах старой библиотеки и влажного леса. Интеллектуально."
     },
@@ -279,8 +279,8 @@ export const celebrities = [
         vibe: "Modern Rose",
         image: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/Zendaya_-_2019_by_Glenn_Francis.jpg/640px-Zendaya_-_2019_by_Glenn_Francis.jpg",
         mix: [
-            { name: "Idôle", color: "bg-pink-300" },
-            { name: "Santal 33", color: "bg-emerald-400" }
+            { name: "Idôle", brand: "Lancôme", color: "bg-pink-300" },
+            { name: "Santal 33", brand: "Le Labo", color: "bg-emerald-400" }
         ],
         quote: "Свежая роза на древесной базе. Женственно, но с стержнем."
     },
@@ -289,8 +289,8 @@ export const celebrities = [
         vibe: "Bohemian",
         image: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Harry_Styles_2017.jpg/640px-Harry_Styles_2017.jpg",
         mix: [
-            { name: "Mémoire d'une Odeur", color: "bg-green-300" },
-            { name: "Tobacco Vanille", color: "bg-yellow-600" }
+            { name: "Mémoire d'une Odeur", brand: "Gucci", color: "bg-green-300" },
+            { name: "Tobacco Vanille", brand: "Tom Ford", color: "bg-yellow-600" }
         ],
         quote: "Ромашка и табак. Винтажный вайб, свобода и стиль."
     },
@@ -299,8 +299,8 @@ export const celebrities = [
         vibe: "Posh Spice",
         image: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Victoria_Beckham_2010.jpg/640px-Victoria_Beckham_2010.jpg",
         mix: [
-            { name: "Room Service", color: "bg-purple-200" },
-            { name: "Mango Skin", color: "bg-orange-400" }
+            { name: "Room Service", brand: "Vilhelm Parfumerie", color: "bg-purple-200" },
+            { name: "Mango Skin", brand: "Vilhelm Parfumerie", color: "bg-orange-400" }
         ],
         quote: "Дорогой отель, свежее белье и фруктовый акцент. Роскошь."
     }
