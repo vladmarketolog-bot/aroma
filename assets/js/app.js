@@ -119,7 +119,10 @@ function setupEventListeners() {
                 const title = recipe.alchemy.title;
                 const text = `✨ ScentMatrix Mix: ${title}\n\n🧪 ${recipe.base.name} + ${recipe.addon.name}\n📝 ${recipe.alchemy.story}\n\nСоздано в ScentMatrix AI`;
 
-                if (navigator.share) {
+                if (window.Telegram?.WebApp?.initData) {
+                    const shareUrl = `https://t.me/share/url?url=${encodeURIComponent('https://t.me/scentmatrix_bot/app')}&text=${encodeURIComponent(text)}`;
+                    window.Telegram.WebApp.openTelegramLink(shareUrl);
+                } else if (navigator.share) {
                     navigator.share({
                         title: 'ScentMatrix Mix',
                         text: text
