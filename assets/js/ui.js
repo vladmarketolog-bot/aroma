@@ -141,6 +141,30 @@ export const ui = {
         }
     },
 
+    showToast(msg, type = 'success') {
+        let toast = document.getElementById('toast');
+        if (!toast) {
+            toast = document.createElement('div');
+            toast.id = 'toast';
+            toast.className = 'fixed top-6 left-1/2 -translate-x-1/2 px-6 py-3 bg-black/80 backdrop-blur-xl border border-gold-500/20 rounded-full text-white text-xs font-serif italic z-[100] transition-all duration-300 opacity-0 translate-y-[-20px] shadow-[0_4px_20px_rgba(0,0,0,0.5)] flex items-center gap-3';
+            document.body.appendChild(toast);
+        }
+
+        const icon = type === 'delete' ? '🗑️' : '✨';
+        toast.innerHTML = `<span class="text-lg">${icon}</span> <span>${msg}</span>`;
+
+        // Show
+        requestAnimationFrame(() => {
+            toast.classList.remove('opacity-0', 'translate-y-[-20px]');
+        });
+
+        // Hide
+        if (this.toastTimeout) clearTimeout(this.toastTimeout);
+        this.toastTimeout = setTimeout(() => {
+            toast.classList.add('opacity-0', 'translate-y-[-20px]');
+        }, 2000);
+    },
+
     switchScreen(id) {
         document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
         const target = document.getElementById(`screen-${id}`);
@@ -165,7 +189,7 @@ export const ui = {
         }
 
         // Handle Back button from sub-screens
-        if (id === 'about' || id === 'technique') {
+        if (id === 'about' || id === 'technique' || id === 'lab-info') {
             // No nav item active for sub-screens
             navId = '';
         }
@@ -229,6 +253,17 @@ export const ui = {
                                 <div>
                                     <div class="text-white font-serif italic text-lg opacity-90 group-hover:opacity-100">Ритуал Нанесения</div>
                                     <div class="text-[10px] uppercase tracking-widest text-white/40">Урок Layering</div>
+                                </div>
+                            </div>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" class="stroke-white/30 group-hover:stroke-gold-400 transition"><path d="M9 18l6-6-6-6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        </button>
+
+                        <button onclick="ui.switchScreen('lab-info')" class="w-full text-left p-5 rounded-2xl glass-premium active:scale-95 transition flex items-center justify-between group">
+                            <div class="flex items-center gap-4">
+                                <div class="w-10 h-10 rounded-full bg-blue-400/10 flex items-center justify-center text-xl">🧪</div>
+                                <div>
+                                    <div class="text-white font-serif italic text-lg opacity-90 group-hover:opacity-100">Гид по Лаборатории</div>
+                                    <div class="text-[10px] uppercase tracking-widest text-white/40">Как смешивать</div>
                                 </div>
                             </div>
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" class="stroke-white/30 group-hover:stroke-gold-400 transition"><path d="M9 18l6-6-6-6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>

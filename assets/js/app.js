@@ -62,6 +62,9 @@ function setupEventListeners() {
             if (!recipe) {
                 recipe = state.favorites.find(r => r.id === id);
             }
+            if (!recipe && labState?.currentResult?.id === id) {
+                recipe = labState.currentResult;
+            }
 
             if (recipe) {
                 const added = state.toggleFavorite(recipe);
@@ -101,6 +104,32 @@ function setupEventListeners() {
             state.removeFromWardrobe(id);
             renderWardrobeChips();
             ui.updateFab();
+        }
+
+        // Share Button (Delegation)
+        const shareBtn = e.target.closest('button[data-action="share"]');
+        if (shareBtn) {
+            e.stopPropagation();
+            const id = shareBtn.dataset.id;
+            let recipe = state.recipes.find(r => r.id === id);
+            if (!recipe) recipe = state.favorites.find(r => r.id === id);
+            if (!recipe && labState?.currentResult?.id === id) recipe = labState.currentResult;
+
+            if (recipe) {
+                const title = recipe.alchemy.title;
+                const text = `✨ ScentMatrix Mix: ${title}\n\n🧪 ${recipe.base.name} + ${recipe.addon.name}\n📝 ${recipe.alchemy.story}\n\nСоздано в ScentMatrix AI`;
+
+                if (navigator.share) {
+                    navigator.share({
+                        title: 'ScentMatrix Mix',
+                        text: text
+                    }).catch(console.error);
+                } else {
+                    navigator.clipboard.writeText(text).then(() => {
+                        ui.showToast('Ссылка скопирована', 'success');
+                    });
+                }
+            }
         }
     });
 
@@ -542,8 +571,8 @@ function updateLabUI() {
             preview.classList.add('flex');
             document.getElementById(`lab-name-${i}`).innerText = p.name;
             document.getElementById(`lab-brand-${i}`).innerText = p.brand;
-            // Assuming p.image exists, if not use placeholder
-            if (p.image) document.getElementById(`lab-img-${i}`).src = p.image;
+            // Use Icon instead of Image
+            document.getElementById(`lab-icon-${i}`).innerText = getIconForFamily(p.family);
         } else {
             preview.classList.add('hidden');
             preview.classList.remove('flex');
@@ -622,6 +651,26 @@ window.calculateLabMix = function () {
     const chaos = Math.random() * 5;
     const matchPercent = Math.min(99, Math.floor(60 + (normalizedScore * 35) + chaos));
 
+    // Create Recipe Object for Saving
+    const recipeId = `lab-${p1.id}-${p2.id}`;
+    const resultRecipe = {
+        id: recipeId,
+        base: p1,
+        addon: p2,
+        score: score,
+        matchPercent: matchPercent,
+        alchemy: {
+            title: dynamicTitle,
+            story: description,
+            tags: tags,
+            mix: `${p1.notes[0]} + ${p2.notes[0]}`, // Simplified visual
+            type: alchemyType
+        }
+    };
+
+    labState.currentResult = resultRecipe;
+    const isLiked = state.isFavorite(recipeId);
+
     // Render Result
     const resultDiv = document.getElementById('lab-result');
     resultDiv.classList.remove('hidden');
@@ -630,7 +679,15 @@ window.calculateLabMix = function () {
             <div class="absolute top-0 right-0 w-64 h-64 bg-gold-500/10 rounded-full blur-[80px] -translate-y-1/2 translate-x-1/2"></div>
             
             <div class="relative z-10 text-center">
-                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gold-400/10 border border-gold-400/20 backdrop-blur-md mb-4">
+                
+                <!-- Save Button -->
+                <button data-action="like" data-id="${recipeId}" class="absolute top-0 right-0 p-3 text-white/40 hover:text-red-500 transition active:scale-95 z-20">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="${isLiked ? 'currentColor' : 'none'}" class="${isLiked ? 'text-red-500' : 'stroke-current'}" stroke="${isLiked ? 'none' : 'currentColor'}" stroke-width="1.5">
+                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                    </svg>
+                </button>
+
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gold-400/10 border border-gold-400/20 backdrop-blur-md mb-4 mt-2">
                     <span class="w-2 h-2 rounded-full bg-gold-400 animate-pulse"></span>
                     <span class="text-[10px] text-gold-300 font-bold uppercase tracking-widest">Match: ${matchPercent}%</span>
                 </div>
