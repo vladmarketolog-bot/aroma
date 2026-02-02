@@ -125,18 +125,44 @@
     <!-- 1. Splash Screen -->
     <div id="screen-splash" class="screen active fixed inset-0 flex-col items-center justify-center z-50 bg-black">
         <div class="relative z-10 text-center">
-            <h1 class="font-serif text-7xl italic text-transparent bg-clip-text bg-gradient-to-tr from-gold-200 via-gold-500 to-amber-700 mb-6 animate-reveal tracking-tighter"
+            <h1 class="font-serif text-7xl italic text-transparent bg-clip-text bg-gradient-to-tr from-gold-200 via-gold-500 to-amber-700 mb-8 animate-reveal tracking-tighter"
                 style="animation-duration: 1.5s;">
                 Scent<br>Matrix
             </h1>
-            <div
-                class="h-px w-24 bg-gradient-to-r from-transparent via-gold-500/50 to-transparent mx-auto mb-6 animate-width">
+
+            <!-- Loading Indicator -->
+            <div class="w-48 h-1 bg-white/10 rounded-full mx-auto mb-4 overflow-hidden">
+                <div
+                    class="h-full bg-gold-400 w-0 animate-[progress_2.5s_cubic-bezier(0.4,0,0.2,1)_forwards] shadow-[0_0_10px_#D4AF37]">
+                </div>
             </div>
-            <p class="text-[8px] uppercase tracking-[0.6em] text-white/40 animate-reveal font-light"
-                style="animation-delay: 0.5s;">
-                Olfactory Intelligence
+
+            <p
+                class="text-[9px] uppercase tracking-[0.3em] text-white/40 animate-pulse font-light flex justify-center gap-1">
+                <span>Загрузка</span>
+                <span class="animate-bounce" style="animation-delay: 0s">.</span>
+                <span class="animate-bounce" style="animation-delay: 0.1s">.</span>
+                <span class="animate-bounce" style="animation-delay: 0.2s">.</span>
             </p>
         </div>
+
+        <style>
+            @keyframes progress {
+                0% {
+                    width: 0%;
+                    opacity: 1;
+                }
+
+                50% {
+                    width: 70%;
+                }
+
+                100% {
+                    width: 100%;
+                    opacity: 1;
+                }
+            }
+        </style>
 
         <!-- Subtle background glow for splash -->
         <div
