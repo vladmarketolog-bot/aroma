@@ -306,7 +306,10 @@ window.startSynthesis = function () {
     logs.innerHTML = '';
     messages.forEach((msg, i) => {
         setTimeout(() => {
-            logs.innerHTML = `<div class="animate-reveal text-gold-400">${msg}</div>`;
+            const msgEl = document.createElement('div');
+            msgEl.className = 'animate-reveal text-gold-400 mb-1';
+            msgEl.textContent = msg;
+            logs.appendChild(msgEl);
         }, i * 800);
     });
 
