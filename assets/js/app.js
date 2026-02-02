@@ -450,7 +450,7 @@ function generateRecipes() {
         });
     });
 
-    recipes.sort((a, b) => b.score - a.score);
+    recipes.sort((a, b) => b.matchPercent - a.matchPercent);
 
     // Filter for unique titles/variety
     const uniqueRecipes = [];
