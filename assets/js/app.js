@@ -66,42 +66,26 @@ function setupEventListeners() {
             if (recipe) {
                 const added = state.toggleFavorite(recipe);
 
-                // Update UI on ALL buttons for this card (Heart + Main Button)
-                const card = likeBtn.closest('.glass-panel');
-                if (card) {
-                    // 1. Update Heart
-                    const heartBtn = card.querySelector('button[data-action="like"].w-10');
-                    if (heartBtn) {
-                        const svg = heartBtn.querySelector('svg');
-                        if (added) {
-                            svg.setAttribute('fill', 'currentColor');
-                            svg.classList.remove('text-white/40');
-                            svg.classList.add('text-red-500', 'stroke-red-500');
-                            heartBtn.classList.add('scale-110');
-                            setTimeout(() => heartBtn.classList.remove('scale-110'), 200);
-                        } else {
-                            svg.setAttribute('fill', 'none');
-                            svg.classList.remove('text-red-500', 'stroke-red-500');
-                            svg.classList.add('text-white/40');
-                        }
-                    }
+                // Direct UI Update for the Heart Button
+                const svg = likeBtn.querySelector('svg');
+                if (svg) {
+                    if (added) {
+                        svg.setAttribute('fill', 'currentColor');
+                        svg.classList.remove('text-white/40');
+                        svg.classList.add('text-red-500', 'stroke-red-500');
 
-                    // 2. Update Big Button
-                    const bigBtn = card.querySelector('button[data-action="like"].w-full');
-                    if (bigBtn) {
-                        if (added) {
-                            bigBtn.classList.remove('bg-gold-500/10', 'hover:bg-gold-500/20', 'border-gold-500/20', 'text-gold-400');
-                            bigBtn.classList.add('bg-green-500/20', 'text-green-400', 'border-green-500/20');
-                            bigBtn.textContent = 'Сохранено в коллекции';
-                        } else {
-                            bigBtn.classList.add('bg-gold-500/10', 'hover:bg-gold-500/20', 'border-gold-500/20', 'text-gold-400');
-                            bigBtn.classList.remove('bg-green-500/20', 'text-green-400', 'border-green-500/20');
-                            bigBtn.textContent = 'Добавить в коллекцию';
-                        }
+                        // Pulse animation
+                        likeBtn.classList.add('scale-125');
+                        setTimeout(() => likeBtn.classList.remove('scale-125'), 200);
+
+                        ui.showToast('Рецепт сохранен!', 'success');
+                    } else {
+                        svg.setAttribute('fill', 'none');
+                        svg.classList.remove('text-red-500', 'stroke-red-500');
+                        svg.classList.add('text-white/40');
+                        ui.showToast('Удалено из коллекции', 'delete');
                     }
                 }
-
-                ui.showToast(added ? 'Сохранено в избранное' : 'Удалено из избранного', added ? 'success' : 'delete');
 
                 // Refresh if on Favorites screen
                 if (!added && document.getElementById('screen-favorites').classList.contains('active')) {
@@ -402,7 +386,8 @@ function generateRecipes() {
                 story: description,
                 // We add our new fields too if UI wants to use them later
                 title: dynamicTitle,
-                tags: tags
+                tags: tags,
+                type: alchemyType // Persist type for logic
             };
 
             // Dynamic Match % calculation
@@ -429,19 +414,21 @@ function generateRecipes() {
     const usedTitles = new Set();
 
     for (const r of recipes) {
-        if (uniqueRecipes.length >= 3) break;
+        if (uniqueRecipes.length >= 10) break;
 
         // If title already exists, try to fallback to a generic one
         if (usedTitles.has(r.alchemy.title)) {
             // Force a generic contrast/bridge title instead of the Magic Duo one
-            const titles = EFFECT_TITLES[r.alchemy.tags.includes('Bridge') ? 'Bridge' : 'Contrast'];
+            const typeKey = r.alchemy.type === 'Bridge' ? 'Bridge' : 'Contrast';
+            const titles = EFFECT_TITLES[typeKey];
+
             if (titles) {
                 // Try to find an unused title in the list
                 const freshTitle = titles.find(t => !usedTitles.has(t));
                 if (freshTitle) {
                     r.alchemy.title = freshTitle;
                     // Also update story to match generic nature if it was specific
-                    r.alchemy.story = r.alchemy.tags.includes('Bridge')
+                    r.alchemy.story = r.alchemy.type === 'Bridge'
                         ? `Гармоничное слияние нот ${r.base.notes[0]} и ${r.addon.notes[0]}.`
                         : `Интригующая игра оттенков ${r.base.family} и ${r.addon.family}.`;
                 } else {

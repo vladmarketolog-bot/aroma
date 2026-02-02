@@ -234,7 +234,7 @@ export const ui = {
                         <div>
                             <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gold-400/5 border border-gold-400/10 backdrop-blur-md mb-3">
                                 <span class="w-1.5 h-1.5 rounded-full bg-gold-400 animate-pulse"></span>
-                                <span class="text-[9px] text-gold-300 font-bold uppercase tracking-widest">Match: ${Math.min(99, r.score)}%</span>
+                                <span class="text-[9px] text-gold-300 font-bold uppercase tracking-widest">Match: ${r.matchPercent}%</span>
                             </div>
                             <h3 class="text-white font-serif text-3xl italic leading-none text-gradient-gold">${r.alchemy.title || r.alchemy.occasion || 'Уникальный Микс'}</h3>
                         </div>
@@ -279,7 +279,10 @@ export const ui = {
                         </p>
                     </div>
 
-                    </div>
+                    <button data-action="share" data-id="${r.id}" class="w-full py-3 rounded-xl flex items-center justify-center gap-2 bg-white/5 hover:bg-white/10 border border-white/5 transition-all duration-300 group/share">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="stroke-white/50 group-hover/share:stroke-gold-400 transition"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8m-4-6l-4-4-4 4m4-4v13" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        <span class="text-[10px] uppercase tracking-[0.15em] text-white/50 group-hover/share:text-white transition">Поделиться</span>
+                    </button>
                 </div>
             </div>
         `;
