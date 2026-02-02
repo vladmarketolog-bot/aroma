@@ -521,7 +521,8 @@ function getIconForFamily(family) {
 }
 
 window.selectLabItem = function (id) {
-    const p = perfumeDB.find(x => x.id === id);
+    const numericId = Number(id);
+    const p = perfumeDB.find(x => x.id === numericId);
     if (!p) return;
 
     if (labState.currentSlot === 1) labState.slot1 = p;
