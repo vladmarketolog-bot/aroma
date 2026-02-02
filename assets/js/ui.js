@@ -207,7 +207,20 @@ export const ui = {
 
                     <!-- Menu Items -->
                     <div class="space-y-3">
-                        <h4 class="text-[10px] text-white/30 uppercase tracking-[0.2em] pl-2">Инфо</h4>
+                        <h4 class="text-[10px] text-white/30 uppercase tracking-[0.2em] pl-2">Инструменты</h4>
+                        
+                        <button onclick="ui.switchScreen('lab')" class="w-full text-left p-5 rounded-2xl glass-premium active:scale-95 transition flex items-center justify-between group">
+                            <div class="flex items-center gap-4">
+                                <div class="w-10 h-10 rounded-full bg-blue-500/10 flex items-center justify-center text-xl">🧪</div>
+                                <div>
+                                    <div class="text-white font-serif italic text-lg opacity-90 group-hover:opacity-100">Лаборатория</div>
+                                    <div class="text-[10px] uppercase tracking-widest text-white/40">Проверка совместимости</div>
+                                </div>
+                            </div>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" class="stroke-white/30 group-hover:stroke-gold-400 transition"><path d="M9 18l6-6-6-6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        </button>
+
+                        <h4 class="text-[10px] text-white/30 uppercase tracking-[0.2em] pl-2 mt-4">Инфо</h4>
                         
                         <button onclick="ui.switchScreen('about')" class="w-full text-left p-5 rounded-2xl glass-premium active:scale-95 transition flex items-center justify-between group">
                             <div class="flex items-center gap-4">

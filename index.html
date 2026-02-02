@@ -124,50 +124,39 @@
 
     <!-- 1. Splash Screen -->
     <div id="screen-splash" class="screen active fixed inset-0 flex-col items-center justify-center z-50 bg-black">
-        <div class="relative z-10 text-center">
-            <h1 class="font-serif text-7xl italic text-transparent bg-clip-text bg-gradient-to-tr from-gold-200 via-gold-500 to-amber-700 mb-8 animate-reveal tracking-tighter"
-                style="animation-duration: 1.5s;">
-                Scent<br>Matrix
-            </h1>
+        <h1 class="font-serif text-7xl italic text-transparent bg-clip-text bg-gradient-to-tr from-gold-200 via-gold-500 to-amber-700 mb-2 animate-reveal tracking-tighter"
+            style="animation-duration: 1.5s;">
+            Scent<br>Matrix
+        </h1>
 
-            <!-- Loading Indicator -->
-            <div class="w-48 h-1 bg-white/10 rounded-full mx-auto mb-4 overflow-hidden">
-                <div
-                    class="h-full bg-gold-400 w-0 animate-[progress_2.5s_cubic-bezier(0.4,0,0.2,1)_forwards] shadow-[0_0_10px_#D4AF37]">
-                </div>
+        <p class="text-[8px] uppercase tracking-[0.6em] text-white/40 animate-reveal font-light mb-8"
+            style="animation-delay: 0.5s;">
+            Olfactory Intelligence
+        </p>
+
+        <!-- Loading Indicator -->
+        <div class="w-24 h-[2px] bg-white/10 rounded-full mx-auto mb-4 overflow-hidden">
+            <div
+                class="h-full bg-gold-400 w-0 animate-[progress_2.5s_cubic-bezier(0.4,0,0.2,1)_forwards] shadow-[0_0_10px_#D4AF37]">
             </div>
-
-            <p
-                class="text-[9px] uppercase tracking-[0.3em] text-white/40 animate-pulse font-light flex justify-center gap-1">
-                <span>Загрузка</span>
-                <span class="animate-bounce" style="animation-delay: 0s">.</span>
-                <span class="animate-bounce" style="animation-delay: 0.1s">.</span>
-                <span class="animate-bounce" style="animation-delay: 0.2s">.</span>
-            </p>
         </div>
 
-        <style>
-            @keyframes progress {
-                0% {
-                    width: 0%;
-                    opacity: 1;
-                }
+        <p class="text-[8px] uppercase tracking-[0.3em] text-gold-500/50 font-mono animate-pulse">
+            INITIALIZING AI MODEL...
+        </p>
+    </div>
 
-                50% {
-                    width: 70%;
-                }
+    <style>
+        @keyframes progress {
+            opacity: 1;
+        }
+        }
+    </style>
 
-                100% {
-                    width: 100%;
-                    opacity: 1;
-                }
-            }
-        </style>
-
-        <!-- Subtle background glow for splash -->
-        <div
-            class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-gold-600/10 rounded-full blur-[100px] pointer-events-none animate-pulse-slow">
-        </div>
+    <!-- Subtle background glow for splash -->
+    <div
+        class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-gold-600/10 rounded-full blur-[100px] pointer-events-none animate-pulse-slow">
+    </div>
     </div>
 
     <!-- 2. Onboarding / Input -->
@@ -199,12 +188,12 @@
 
             <div class="relative z-10 w-full">
                 <div class="inline-flex items-center gap-2 mb-2 opacity-60">
-                    <span class="text-[9px] uppercase tracking-[0.2em] text-white">Технология Match</span>
+                    <span class="text-[9px] uppercase tracking-[0.2em] text-white">Global Trend</span>
                 </div>
-                <h2 class="font-serif text-3xl text-gradient-gold italic mb-2 leading-none">Ваш Личный<br>ИИ-Парфюмер
-                </h2>
-                <p class="text-xs text-white/70 font-light max-w-[85%] leading-relaxed mt-2">
-                    Обученный на работах лучших домов мира. Мы создадим для вас уникальный шлейф.
+                <h2 class="font-serif text-3xl text-gradient-gold italic mb-2 leading-none">Искусство Layering</h2>
+                <p class="text-xs text-white/70 font-light max-w-[90%] leading-relaxed mt-2">
+                    Смешивание ароматов — главный тренд в мире высокой парфюмерии. Наш ИИ поможет вам создать уникальную
+                    подпись из вашего гардероба, избежав неудачных сочетаний.
                 </p>
             </div>
         </div>
@@ -537,6 +526,100 @@
                 </div>
             </div>
 
+        </div>
+    </div>
+
+    <!-- 9. Mix Lab Screen -->
+    <div id="screen-lab"
+        class="screen fixed inset-0 flex-col z-50 bg-black overflow-y-auto pb-32 transition-opacity duration-300">
+        <div
+            class="sticky top-0 bg-black/80 backdrop-blur-xl p-4 z-20 border-b border-white/5 flex items-center justify-between">
+            <div class="flex items-center gap-4">
+                <button onclick="ui.switchScreen('profile')"
+                    class="w-10 h-10 flex items-center justify-center rounded-full active:bg-white/10 transition">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" class="stroke-white">
+                        <path d="M15 18l-6-6 6-6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                </button>
+                <div class="font-serif text-xl text-white">Лаборатория</div>
+            </div>
+            <button onclick="resetLab()" class="text-[10px] uppercase tracking-widest text-white/40">Сброс</button>
+        </div>
+
+        <div class="p-6">
+            <div class="text-center mb-10">
+                <p class="text-xs text-white/50 font-light max-w-[80%] mx-auto">
+                    Выберите два любых аромата из базы, чтобы проверить их совместимость.
+                </p>
+            </div>
+
+            <!-- Slots -->
+            <div class="flex items-center gap-4 mb-4">
+                <!-- Slot 1 -->
+                <button id="lab-slot-1" onclick="openLabPicker(1)"
+                    class="flex-1 aspect-[3/4] rounded-2xl border border-dashed border-white/20 bg-white/5 flex flex-col items-center justify-center gap-3 relative overflow-hidden group hover:bg-white/10 transition active:scale-95">
+                    <div
+                        class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center text-2xl group-hover:scale-110 transition">
+                        🪵</div>
+                    <span class="text-[10px] uppercase tracking-widest text-white/40">Основа</span>
+                    <div id="lab-preview-1"
+                        class="absolute inset-0 bg-dark-900 hidden flex-col items-center justify-center p-2 text-center">
+                        <img id="lab-img-1" src="" class="w-full h-full object-cover opacity-50 absolute inset-0">
+                        <div class="relative z-10">
+                            <div id="lab-name-1" class="text-xs font-serif text-white font-bold leading-tight mb-1">Name
+                            </div>
+                            <div id="lab-brand-1" class="text-[8px] uppercase text-white/60">Brand</div>
+                        </div>
+                    </div>
+                </button>
+
+                <div class="text-gold-400 font-serif text-2xl animate-pulse">+</div>
+
+                <!-- Slot 2 -->
+                <button id="lab-slot-2" onclick="openLabPicker(2)"
+                    class="flex-1 aspect-[3/4] rounded-2xl border border-dashed border-white/20 bg-white/5 flex flex-col items-center justify-center gap-3 relative overflow-hidden group hover:bg-white/10 transition active:scale-95">
+                    <div
+                        class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center text-2xl group-hover:scale-110 transition">
+                        🌸</div>
+                    <span class="text-[10px] uppercase tracking-widest text-white/40">Слой</span>
+                    <div id="lab-preview-2"
+                        class="absolute inset-0 bg-dark-900 hidden flex-col items-center justify-center p-2 text-center">
+                        <img id="lab-img-2" src="" class="w-full h-full object-cover opacity-50 absolute inset-0">
+                        <div class="relative z-10">
+                            <div id="lab-name-2" class="text-xs font-serif text-white font-bold leading-tight mb-1">Name
+                            </div>
+                            <div id="lab-brand-2" class="text-[8px] uppercase text-white/60">Brand</div>
+                        </div>
+                    </div>
+                </button>
+            </div>
+
+            <!-- Mix Button -->
+            <button id="lab-mix-btn" onclick="calculateLabMix()"
+                class="w-full py-4 rounded-xl bg-white/5 text-white/20 font-serif italic text-lg border border-white/5 transition-all duration-300 pointer-events-none mb-10">
+                Синтезировать
+            </button>
+
+            <!-- Result Area -->
+            <div id="lab-result" class="hidden animate-reveal">
+                <!-- Injected via JS -->
+            </div>
+        </div>
+
+        <!-- Picker Modal -->
+        <div id="lab-picker"
+            class="fixed inset-0 z-[60] bg-dark-900 translate-y-full transition-transform duration-300 flex flex-col">
+            <div class="p-4 border-b border-white/5 flex items-center gap-4">
+                <button onclick="closeLabPicker()" class="w-10 h-10 flex items-center justify-center"><svg width="24"
+                        height="24" viewBox="0 0 24 24" fill="none" class="stroke-white">
+                        <path d="M15 18l-6-6 6-6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg></button>
+                <input type="text" id="lab-search" placeholder="Поиск..."
+                    class="flex-1 bg-transparent border-none outline-none text-white placeholder:text-white/30 font-serif">
+            </div>
+            <div id="lab-list" class="flex-1 overflow-y-auto p-4 space-y-2">
+                <!-- List items -->
+            </div>
         </div>
     </div>
 

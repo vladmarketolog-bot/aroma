@@ -461,3 +461,186 @@ function analyzeStructure(p1, p2) {
     }
     return 0;
 }
+
+// --- LAB LOGIC ---
+
+let labState = {
+    slot1: null,
+    slot2: null,
+    currentSlot: 1
+};
+
+window.openLabPicker = function (slot) {
+    labState.currentSlot = slot;
+    document.getElementById('lab-picker').classList.remove('translate-y-full');
+    renderLabList();
+    // Focus search
+    setTimeout(() => document.getElementById('lab-search')?.focus(), 100);
+};
+
+window.closeLabPicker = function () {
+    document.getElementById('lab-picker').classList.add('translate-y-full');
+};
+
+window.resetLab = function () {
+    labState.slot1 = null;
+    labState.slot2 = null;
+    updateLabUI();
+    document.getElementById('lab-result').innerHTML = '';
+    document.getElementById('lab-result').classList.add('hidden');
+    document.getElementById('lab-mix-btn').classList.add('pointer-events-none');
+    document.getElementById('lab-mix-btn').classList.remove('bg-gradient-to-r', 'from-gold-500', 'to-gold-400', 'text-black', 'shadow-lg');
+    document.getElementById('lab-mix-btn').classList.add('bg-white/5', 'text-white/20');
+};
+
+function renderLabList(filter = '') {
+    const list = document.getElementById('lab-list');
+    if (!list) return;
+
+    const filtered = perfumeDB.filter(p =>
+        p.name.toLowerCase().includes(filter.toLowerCase()) ||
+        p.brand.toLowerCase().includes(filter.toLowerCase())
+    );
+
+    list.innerHTML = filtered.map(p => `
+        <button onclick="selectLabItem('${p.id}')" class="w-full flex items-center gap-3 p-3 rounded-xl bg-white/5 active:bg-white/10 transition text-left mb-2">
+            <div class="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center text-lg">${getIconForFamily(p.family)}</div>
+            <div>
+                <div class="text-white font-serif text-sm">${p.name}</div>
+                <div class="text-white/40 text-[10px] uppercase">${p.brand}</div>
+            </div>
+        </button>
+    `).join('');
+}
+
+function getIconForFamily(family) {
+    const map = {
+        'Floral': '🌸', 'Oriental': '🏺', 'Woody': '🪵', 'Fresh': '💧', 'Citrus': '🍋', 'Fougere': '🌿', 'Leather': '👞', 'Chypre': '🌳'
+    };
+    return map[family] || '✨';
+}
+
+window.selectLabItem = function (id) {
+    const p = perfumeDB.find(x => x.id === id);
+    if (!p) return;
+
+    if (labState.currentSlot === 1) labState.slot1 = p;
+    else labState.slot2 = p;
+
+    updateLabUI();
+    closeLabPicker();
+};
+
+function updateLabUI() {
+    [1, 2].forEach(i => {
+        const p = labState[`slot${i}`];
+        const preview = document.getElementById(`lab-preview-${i}`);
+
+        if (p) {
+            preview.classList.remove('hidden');
+            preview.classList.add('flex');
+            document.getElementById(`lab-name-${i}`).innerText = p.name;
+            document.getElementById(`lab-brand-${i}`).innerText = p.brand;
+            // Assuming p.image exists, if not use placeholder
+            if (p.image) document.getElementById(`lab-img-${i}`).src = p.image;
+        } else {
+            preview.classList.add('hidden');
+            preview.classList.remove('flex');
+        }
+    });
+
+    const btn = document.getElementById('lab-mix-btn');
+    if (labState.slot1 && labState.slot2) {
+        btn.classList.remove('pointer-events-none', 'bg-white/5', 'text-white/20');
+        btn.classList.add('bg-gradient-to-r', 'from-gold-500', 'to-gold-400', 'text-black', 'shadow-lg');
+    } else {
+        btn.classList.add('pointer-events-none', 'bg-white/5', 'text-white/20');
+        btn.classList.remove('bg-gradient-to-r', 'from-gold-500', 'to-gold-400', 'text-black', 'shadow-lg');
+    }
+}
+
+// Search listener
+document.getElementById('lab-search')?.addEventListener('input', (e) => {
+    renderLabList(e.target.value);
+});
+
+
+// CORE LOGIC
+window.calculateLabMix = function () {
+    const p1 = labState.slot1;
+    const p2 = labState.slot2;
+    if (!p1 || !p2) return;
+
+    // Reuse logic from generateRecipes roughly
+    let score = 0;
+    let tags = [];
+    let alchemyType = 'Neutral';
+    let dynamicTitle = "";
+    let description = "";
+
+    // 1. Harmony
+    const harmonyScore = FAMILY_HARMONY[p1.family]?.[p2.family] || 5;
+    score += harmonyScore * 2;
+    if (harmonyScore >= 9) tags.push("🔥 Химия семейств");
+
+    // 2. Bridge
+    const sharedNotes = p1.notes.filter(n => p2.notes.includes(n));
+    if (sharedNotes.length > 0) {
+        score += 30;
+        alchemyType = 'Bridge';
+        tags.push(`✨ Связь: ${sharedNotes[0]}`);
+        description = `Ароматы соединяются через ноту ${sharedNotes[0]}.`;
+    }
+
+    // 3. Magic
+    const allNotes = [...p1.notes, ...p2.notes];
+    const magic = MAGIC_DUOS.find(duo => duo.notes.every(n => allNotes.some(an => an.includes(n))));
+    if (magic) {
+        score += 50;
+        dynamicTitle = magic.name;
+        description = magic.desc;
+        tags.push("🏆 Золотой Дуэт");
+    }
+
+    // 4. Structure
+    score += analyzeStructure(p1, p2);
+
+    // Assembly
+    if (!dynamicTitle) {
+        const titles = EFFECT_TITLES[alchemyType in EFFECT_TITLES ? alchemyType : 'Contrast'];
+        if (titles) dynamicTitle = titles[Math.floor(Math.random() * titles.length)];
+        else dynamicTitle = "Смелый Микс";
+    }
+
+    if (!description) {
+        if (alchemyType === 'Bridge') description = `Гармоничное слияние ${p1.name} и ${p2.name}.`;
+        else description = `Смелый контраст текстур ${p1.family} и ${p2.family}.`;
+    }
+
+    const normalizedScore = Math.min(1, score / 120);
+    const chaos = Math.random() * 5;
+    const matchPercent = Math.min(99, Math.floor(60 + (normalizedScore * 35) + chaos));
+
+    // Render Result
+    const resultDiv = document.getElementById('lab-result');
+    resultDiv.classList.remove('hidden');
+    resultDiv.innerHTML = `
+        <div class="glass-premium p-6 rounded-[2rem] relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-64 h-64 bg-gold-500/10 rounded-full blur-[80px] -translate-y-1/2 translate-x-1/2"></div>
+            
+            <div class="relative z-10 text-center">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gold-400/10 border border-gold-400/20 backdrop-blur-md mb-4">
+                    <span class="w-2 h-2 rounded-full bg-gold-400 animate-pulse"></span>
+                    <span class="text-[10px] text-gold-300 font-bold uppercase tracking-widest">Match: ${matchPercent}%</span>
+                </div>
+
+                <h3 class="text-3xl text-gradient-gold font-serif italic mb-2 leading-none">${dynamicTitle}</h3>
+                <p class="text-white/60 text-xs font-light leading-relaxed mb-6">${description}</p>
+
+                <div class="flex flex-wrap justify-center gap-2">
+                    ${tags.map(t => `<span class="px-3 py-1 bg-white/5 rounded-lg text-[10px] text-white/50 border border-white/5">${t}</span>`).join('')}
+                </div>
+            </div>
+        </div>
+    `;
+};
