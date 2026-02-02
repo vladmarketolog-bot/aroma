@@ -431,6 +431,89 @@
         </div>
     </div>
 
+    <!-- 8. Application Technique Screen -->
+    <div id="screen-technique"
+        class="screen fixed inset-0 flex-col z-50 bg-black overflow-y-auto pb-10 transition-opacity duration-300">
+        <div class="sticky top-0 bg-black/80 backdrop-blur-xl p-4 z-20 border-b border-white/5 flex items-center gap-4">
+            <button onclick="ui.switchScreen('profile')"
+                class="w-10 h-10 flex items-center justify-center rounded-full active:bg-white/10 transition">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" class="stroke-white">
+                    <path d="M15 18l-6-6 6-6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+            </button>
+            <div class="font-serif text-xl text-white">Ритуал Нанесения</div>
+        </div>
+
+        <div class="p-6 space-y-8 animate-reveal">
+
+            <div class="relative glass-premium p-6 rounded-3xl overflow-hidden group">
+                <div
+                    class="absolute right-0 top-0 w-32 h-32 bg-gold-500/10 rounded-full blur-2xl group-hover:bg-gold-500/20 transition duration-700">
+                </div>
+                <div class="relative z-10">
+                    <div class="text-[50px] font-serif text-white/5 absolute -top-2 right-2">01</div>
+                    <h3 class="font-serif text-2xl text-white mb-2">Тяжелый — Вниз</h3>
+                    <p class="text-sm text-white/60 font-light leading-relaxed">
+                        Всегда начинайте с более "тяжелого" или насыщенного аромата (обычно древесные, восточные). Это
+                        ваша база (Base Layer).
+                    </p>
+                    <div class="mt-4 flex gap-2">
+                        <span
+                            class="px-2 py-1 rounded bg-white/5 text-[10px] text-white/50 border border-white/5">Шея</span>
+                        <span
+                            class="px-2 py-1 rounded bg-white/5 text-[10px] text-white/50 border border-white/5">Запястья</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center text-white/20 text-xl font-serif italic">...ждем 30 секунд...</div>
+
+            <div class="relative glass-premium p-6 rounded-3xl overflow-hidden group">
+                <div
+                    class="absolute left-0 bottom-0 w-32 h-32 bg-purple-500/10 rounded-full blur-2xl group-hover:bg-purple-500/20 transition duration-700">
+                </div>
+                <div class="relative z-10">
+                    <div class="text-[50px] font-serif text-white/5 absolute -top-2 right-2">02</div>
+                    <h3 class="font-serif text-2xl text-white mb-2">Легкий — Сверху</h3>
+                    <p class="text-sm text-white/60 font-light leading-relaxed">
+                        Нанесите второй, более легкий аромат (цветочный, цитрусовый) поверх первого. Он создаст шлейф и
+                        "поднимет" композицию.
+                    </p>
+                </div>
+            </div>
+
+            <div class="p-5 rounded-2xl border border-red-500/20 bg-red-500/5 backdrop-blur-sm">
+                <div class="flex items-start gap-3">
+                    <div class="text-xl">🛑</div>
+                    <div>
+                        <div class="text-red-300 font-serif mb-1">Главное правило</div>
+                        <div class="text-xs text-white/60 font-light">Никогда не растирайте запястья! Это разрушает
+                            молекулы верхних нот и ломает структуру аромата.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="relative glass-premium p-6 rounded-3xl overflow-hidden">
+                <h3 class="font-serif text-xl text-white mb-3 text-center">Секретные Зоны</h3>
+                <div class="grid grid-cols-3 gap-2 text-center">
+                    <div class="p-3 bg-white/5 rounded-xl">
+                        <div class="text-xl mb-1">💇‍♀️</div>
+                        <div class="text-[10px] uppercase tracking-wider text-white/50">Волосы</div>
+                    </div>
+                    <div class="p-3 bg-white/5 rounded-xl">
+                        <div class="text-xl mb-1">🧣</div>
+                        <div class="text-[10px] uppercase tracking-wider text-white/50">Шарф</div>
+                    </div>
+                    <div class="p-3 bg-white/5 rounded-xl">
+                        <div class="text-xl mb-1">💪</div>
+                        <div class="text-[10px] uppercase tracking-wider text-white/50">Локти</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
     <!-- Bottom Navigation -->
     <div class="fixed bottom-0 left-0 right-0 z-50 p-4 pointer-events-none">
         <nav
