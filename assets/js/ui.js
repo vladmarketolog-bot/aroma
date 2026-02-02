@@ -394,8 +394,8 @@ export const ui = {
                             <span class="text-[9px] uppercase tracking-widest text-white">Эффект</span>
                         </div>
                         <p class="text-sm text-white/80 leading-relaxed font-light">
-                            <span class="block mb-2 italic text-lg">"${r.alchemy.story}"</span>
-                            <span class="text-xs text-white/40 font-sans">Химия: ${r.alchemy.effect}</span>
+                            <span class="block mb-2 text-lg font-medium text-white/90">Химия: ${r.alchemy.effect}</span>
+                            <span class="text-xs text-white/50 italic font-light">"${r.alchemy.story}"</span>
                         </p>
                     </div>
 
