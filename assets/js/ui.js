@@ -161,8 +161,8 @@ export const ui = {
             this.renderProfile();
         }
 
-        // Handle Back button from 'about' screen (or others)
-        if (id === 'about') {
+        // Handle Back button from sub-screens
+        if (id === 'about' || id === 'technique') {
             // No nav item active for sub-screens
             navId = '';
         }
@@ -208,12 +208,24 @@ export const ui = {
                     <!-- Menu Items -->
                     <div class="space-y-3">
                         <h4 class="text-[10px] text-white/30 uppercase tracking-[0.2em] pl-2">Инфо</h4>
+                        
                         <button onclick="ui.switchScreen('about')" class="w-full text-left p-5 rounded-2xl glass-premium active:scale-95 transition flex items-center justify-between group">
                             <div class="flex items-center gap-4">
                                 <div class="w-10 h-10 rounded-full bg-gold-400/10 flex items-center justify-center text-xl">🧠</div>
                                 <div>
                                     <div class="text-white font-serif italic text-lg opacity-90 group-hover:opacity-100">Как это работает?</div>
                                     <div class="text-[10px] uppercase tracking-widest text-white/40">Логика Match</div>
+                                </div>
+                            </div>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" class="stroke-white/30 group-hover:stroke-gold-400 transition"><path d="M9 18l6-6-6-6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        </button>
+
+                        <button onclick="ui.switchScreen('technique')" class="w-full text-left p-5 rounded-2xl glass-premium active:scale-95 transition flex items-center justify-between group">
+                            <div class="flex items-center gap-4">
+                                <div class="w-10 h-10 rounded-full bg-purple-400/10 flex items-center justify-center text-xl">🧖‍♀️</div>
+                                <div>
+                                    <div class="text-white font-serif italic text-lg opacity-90 group-hover:opacity-100">Ритуал Нанесения</div>
+                                    <div class="text-[10px] uppercase tracking-widest text-white/40">Урок Layering</div>
                                 </div>
                             </div>
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" class="stroke-white/30 group-hover:stroke-gold-400 transition"><path d="M9 18l6-6-6-6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -318,22 +330,22 @@ export const ui = {
                         <!-- Line Connector -->
                         <div class="absolute top-1/2 left-10 right-10 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
 
-                        <div class="text-center relative z-10 bg-dark-900/10 backdrop-blur-sm px-2 rounded-lg">
+                        <div class="text-center relative z-10 bg-dark-900/10 backdrop-blur-sm px-2 rounded-lg max-w-[120px]">
                             <div class="w-12 h-12 mx-auto rounded-2xl bg-white/5 border border-white/5 flex items-center justify-center mb-3 text-lg shadow-lg">🪵</div>
                             <div class="text-[9px] text-white/30 uppercase tracking-widest mb-1">Основа</div>
-                            <div class="text-sm text-white font-serif truncate max-w-[100px] leading-tight">${r.base.name}</div>
-                            <div class="text-[8px] text-white/40 uppercase tracking-wider truncate max-w-[100px] mt-1">${r.base.brand}</div>
+                            <div class="text-sm text-white font-serif leading-tight">${r.base.name}</div>
+                            <div class="text-[8px] text-white/40 uppercase tracking-wider mt-1 leading-tight">${r.base.brand}</div>
                         </div>
 
                         <div class="relative z-10 bg-dark-800 rounded-full w-8 h-8 flex items-center justify-center border border-gold-500/30 text-gold-400 font-serif shadow-[0_0_15px_rgba(212,175,55,0.2)]">
                             +
                         </div>
 
-                        <div class="text-center relative z-10 bg-dark-900/10 backdrop-blur-sm px-2 rounded-lg">
+                        <div class="text-center relative z-10 bg-dark-900/10 backdrop-blur-sm px-2 rounded-lg max-w-[120px]">
                             <div class="w-12 h-12 mx-auto rounded-2xl bg-white/5 border border-white/5 flex items-center justify-center mb-3 text-lg shadow-lg">🌸</div>
                             <div class="text-[9px] text-gold-400/60 uppercase tracking-widest mb-1">Слой</div>
-                            <div class="text-sm text-gold-400 font-serif italic truncate max-w-[100px] leading-tight">${r.addon.name}</div>
-                            <div class="text-[8px] text-gold-400/40 uppercase tracking-wider truncate max-w-[100px] mt-1">${r.addon.brand}</div>
+                            <div class="text-sm text-gold-400 font-serif italic leading-tight">${r.addon.name}</div>
+                            <div class="text-[8px] text-gold-400/40 uppercase tracking-wider mt-1 leading-tight">${r.addon.brand}</div>
                         </div>
                     </div>
 

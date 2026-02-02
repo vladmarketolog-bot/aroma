@@ -222,14 +222,14 @@ function renderCelebrities() {
                 <p class="text-xs text-white/60 font-light leading-relaxed mb-4 line-clamp-2">"${celeb.quote}"</p>
                 
                 <div class="grid grid-cols-[1fr_auto_1fr] gap-3 items-center w-full mt-2 border-t border-white/5 pt-3">
-                    <div class="text-left overflow-hidden">
-                        <div class="text-[10px] text-white font-bold truncate tracking-widest uppercase">${celeb.mix[0].name}</div>
-                        <div class="text-[8px] text-white/50 truncate uppercase tracking-wider mt-0.5">${celeb.mix[0].brand}</div>
+                    <div class="text-left">
+                        <div class="text-[9px] text-white font-bold tracking-wider uppercase leading-tight">${celeb.mix[0].name}</div>
+                        <div class="text-[8px] text-white/50 uppercase tracking-wide mt-0.5 leading-tight">${celeb.mix[0].brand}</div>
                     </div>
                     <div class="text-gold-400 font-serif text-lg italic">+</div>
-                    <div class="text-right overflow-hidden">
-                        <div class="text-[10px] text-white font-bold truncate tracking-widest uppercase">${celeb.mix[1].name}</div>
-                        <div class="text-[8px] text-white/50 truncate uppercase tracking-wider mt-0.5">${celeb.mix[1].brand}</div>
+                    <div class="text-right">
+                        <div class="text-[9px] text-white font-bold tracking-wider uppercase leading-tight">${celeb.mix[1].name}</div>
+                        <div class="text-[8px] text-white/50 uppercase tracking-wide mt-0.5 leading-tight">${celeb.mix[1].brand}</div>
                     </div>
                 </div>
             </div>
