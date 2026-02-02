@@ -279,9 +279,7 @@ export const ui = {
                         </p>
                     </div>
 
-                    <button data-action="like" data-id="${r.id}" class="group w-full py-4 rounded-xl flex items-center justify-center gap-3 transition-all duration-300 ${isLiked ? 'bg-green-500/10 text-green-400 border border-green-500/20' : 'bg-gold-500/10 hover:bg-gold-500/20 border border-gold-500/20 text-gold-400 hover:shadow-[0_0_20px_rgba(212,175,55,0.1)]'}">
-                        <span class="text-xs uppercase tracking-[0.2em] font-semibold">${isLiked ? 'Сохранено' : 'Добавить'}</span>
-                    </button>
+                    </div>
                 </div>
             </div>
         `;

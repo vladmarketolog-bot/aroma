@@ -405,21 +405,59 @@ function generateRecipes() {
                 tags: tags
             };
 
+            // Dynamic Match % calculation
+            // Max score is approx 140. We want a range of 80% - 99%.
+            const normalizedScore = Math.min(1, score / 120);
+            const chaos = Math.random() * 3; // 0-3% variance
+            const matchValue = 82 + (normalizedScore * 16) + chaos;
+
             recipes.push({
                 id: `${basePerfume.id}-${addonPerfume.id}`,
                 base: basePerfume,
                 addon: addonPerfume,
                 score: score,
-                matchPercent: Math.min(99, Math.floor(70 + (score / 150) * 30)),
+                matchPercent: Math.min(99, Math.floor(matchValue)),
                 alchemy: alchemy
             });
         });
     });
 
     recipes.sort((a, b) => b.score - a.score);
-    const topRecipes = recipes.slice(0, 3);
-    state.setRecipes(topRecipes);
-    ui.renderRecipes(topRecipes);
+
+    // Filter for unique titles/variety
+    const uniqueRecipes = [];
+    const usedTitles = new Set();
+
+    for (const r of recipes) {
+        if (uniqueRecipes.length >= 3) break;
+
+        // If title already exists, try to fallback to a generic one
+        if (usedTitles.has(r.alchemy.title)) {
+            // Force a generic contrast/bridge title instead of the Magic Duo one
+            const titles = EFFECT_TITLES[r.alchemy.tags.includes('Bridge') ? 'Bridge' : 'Contrast'];
+            if (titles) {
+                // Try to find an unused title in the list
+                const freshTitle = titles.find(t => !usedTitles.has(t));
+                if (freshTitle) {
+                    r.alchemy.title = freshTitle;
+                    // Also update story to match generic nature if it was specific
+                    r.alchemy.story = r.alchemy.tags.includes('Bridge')
+                        ? `Гармоничное слияние нот ${r.base.notes[0]} и ${r.addon.notes[0]}.`
+                        : `Интригующая игра оттенков ${r.base.family} и ${r.addon.family}.`;
+                } else {
+                    continue; // Skip if we really can't find a unique name
+                }
+            } else {
+                continue;
+            }
+        }
+
+        usedTitles.add(r.alchemy.title);
+        uniqueRecipes.push(r);
+    }
+
+    state.setRecipes(uniqueRecipes);
+    ui.renderRecipes(uniqueRecipes);
 }
 
 function analyzeStructure(p1, p2) {
