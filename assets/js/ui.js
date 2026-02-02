@@ -236,7 +236,7 @@ export const ui = {
                                 <span class="w-1.5 h-1.5 rounded-full bg-gold-400 animate-pulse"></span>
                                 <span class="text-[9px] text-gold-300 font-bold uppercase tracking-widest">Match: ${Math.min(99, r.score)}%</span>
                             </div>
-                            <h3 class="text-white font-serif text-3xl italic leading-none text-gradient-gold">${r.alchemy.occasion}</h3>
+                            <h3 class="text-white font-serif text-3xl italic leading-none text-gradient-gold">${r.alchemy.title || r.alchemy.occasion || 'Уникальный Микс'}</h3>
                         </div>
                         <button data-action="like" data-id="${r.id}" class="w-12 h-12 -mt-2 -mr-2 rounded-full flex items-center justify-center transition active:scale-90 hover:bg-white/5 group/btn">
                             <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="${fill}" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="${colorClass} transition-colors duration-300 group-hover/btn:scale-110"><path d="M19 14c1.49-1.28 3-4.34 3-6.53 0-3.02-2.63-5.47-5.63-5.47a5.57 5.57 0 0 0-3.95 2.5 5.57 5.57 0 0 0-3.95-2.5C5.63 2 3 4.45 3 7.47c0 2.19 1.51 5.25 3 6.53L12 21.6l7-7.6z"></path></svg>

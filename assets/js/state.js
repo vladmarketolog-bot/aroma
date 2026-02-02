@@ -67,6 +67,11 @@ export class State {
         this.notify();
     }
 
+    setRecipes(recipes) {
+        this.recipes = recipes;
+        this.notify();
+    }
+
     toggleFavorite(recipe) {
         const index = this.favorites.findIndex(f => f.id === recipe.id);
         if (index >= 0) {
