@@ -391,10 +391,11 @@ function generateRecipes() {
             };
 
             // Dynamic Match % calculation
-            // Max score is approx 140. We want a range of 80% - 99%.
+            // Wider spread: 60% - 99% to show real difference
             const normalizedScore = Math.min(1, score / 120);
-            const chaos = Math.random() * 3; // 0-3% variance
-            const matchValue = 82 + (normalizedScore * 16) + chaos;
+            const chaos = Math.random() * 5; // 0-5% variance
+            // Base 60 + up to 35 from score + chaos -> Max ~100 clamped to 99
+            const matchValue = 60 + (normalizedScore * 35) + chaos;
 
             recipes.push({
                 id: `${basePerfume.id}-${addonPerfume.id}`,

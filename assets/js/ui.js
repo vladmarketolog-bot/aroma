@@ -152,10 +152,19 @@ export const ui = {
         // simple mapping
         let navId = '';
         if (['input', 'processing', 'result'].includes(id)) navId = 'nav-create';
-        if (id === 'favorites') navId = 'nav-fav';
+        if (id === 'favorites') {
+            navId = 'nav-fav';
+            this.renderFavorites();
+        }
         if (id === 'profile') {
             navId = 'nav-profile';
             this.renderProfile();
+        }
+
+        // Handle Back button from 'about' screen (or others)
+        if (id === 'about') {
+            // No nav item active for sub-screens
+            navId = '';
         }
 
         if (navId) {
@@ -170,6 +179,67 @@ export const ui = {
         } else {
             fab.classList.add('translate-y-40', 'opacity-0');
         }
+    },
+
+    renderProfile() {
+        const container = document.getElementById('screen-profile');
+        if (!container) return;
+
+        const wardrobeCount = state.wardrobe.length;
+        const favCount = state.favorites.length;
+
+        container.innerHTML = `
+            <div class="p-6 pt-12 flex flex-col h-full">
+                <h2 class="font-serif text-3xl text-white mb-8">Меню</h2>
+
+                <div class="flex-1 space-y-8">
+                    <!-- Stats Grid -->
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="glass-premium p-5 rounded-3xl flex flex-col items-center justify-center gap-1 group hover:bg-white/5 transition">
+                            <div class="text-3xl text-gold-300 font-serif group-hover:scale-110 transition duration-300">${wardrobeCount}</div>
+                            <div class="text-[9px] text-white/40 uppercase tracking-widest text-center">Ароматов<br>в базе</div>
+                        </div>
+                        <div class="glass-premium p-5 rounded-3xl flex flex-col items-center justify-center gap-1 group hover:bg-white/5 transition">
+                            <div class="text-3xl text-white font-serif group-hover:scale-110 transition duration-300">${favCount}</div>
+                            <div class="text-[9px] text-white/40 uppercase tracking-widest text-center">Избранных<br>рецептов</div>
+                        </div>
+                    </div>
+
+                    <!-- Menu Items -->
+                    <div class="space-y-3">
+                        <h4 class="text-[10px] text-white/30 uppercase tracking-[0.2em] pl-2">Инфо</h4>
+                        <button onclick="ui.switchScreen('about')" class="w-full text-left p-5 rounded-2xl glass-premium active:scale-95 transition flex items-center justify-between group">
+                            <div class="flex items-center gap-4">
+                                <div class="w-10 h-10 rounded-full bg-gold-400/10 flex items-center justify-center text-xl">🧠</div>
+                                <div>
+                                    <div class="text-white font-serif italic text-lg opacity-90 group-hover:opacity-100">Как это работает?</div>
+                                    <div class="text-[10px] uppercase tracking-widest text-white/40">Логика Match</div>
+                                </div>
+                            </div>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" class="stroke-white/30 group-hover:stroke-gold-400 transition"><path d="M9 18l6-6-6-6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        </button>
+                    </div>
+
+                    <!-- Actions -->
+                    <div class="space-y-3">
+                        <h4 class="text-[10px] text-white/30 uppercase tracking-[0.2em] pl-2">Настройки</h4>
+                        <button onclick="window.fullReset()" class="w-full p-4 rounded-2xl glass-premium flex items-center justify-between group hover:border-red-500/30 transition">
+                            <div class="flex items-center gap-4">
+                                <div class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-red-500/10 transition">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" class="stroke-white/50 group-hover:stroke-red-400 transition"><path d="M19 7l-.867 12.142A2 2 0 0 1 16.138 21H7.862a2 2 0 0 1-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v3M4 7h16" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                </div>
+                                <span class="text-sm text-white/60 group-hover:text-red-300 transition text-left">Сбросить<br>все данные</span>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="text-center mt-8 mb-20 safe-pb">
+                    <div class="w-12 h-1 bg-white/5 mx-auto rounded-full mb-4"></div>
+                    <p class="text-[10px] text-white/20 tracking-widest">SCENTMATRIX v3.0</p>
+                </div>
+            </div>
+        `;
     },
 
     showToast(msg, type = 'success') {

@@ -227,7 +227,7 @@ export const celebrities = [
     {
         name: "Meghan Markle",
         vibe: "English Garden",
-        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Meghan_Markle_2018.jpg/800px-Meghan_Markle_2018.jpg",
+        image: "assets/images/celebrities/meghan.png",
         mix: [
             { name: "Wild Bluebell", brand: "Jo Malone London", color: "bg-blue-400" },
             { name: "Wood Sage & Sea Salt", brand: "Jo Malone London", color: "bg-teal-400" }
@@ -237,7 +237,7 @@ export const celebrities = [
     {
         name: "Rihanna",
         vibe: "Gourmand Queen",
-        image: "https://upload.wikimedia.org/wikipedia/commons/c/c2/Rihanna_Fenty_2017_cropped.jpg",
+        image: "assets/images/celebrities/rihanna.png",
         mix: [
             { name: "Love, Don't Be Shy", brand: "Kilian", color: "bg-pink-500" },
             { name: "Rolling in Love", brand: "Kilian", color: "bg-red-400" }
@@ -247,7 +247,7 @@ export const celebrities = [
     {
         name: "Hailey Bieber",
         vibe: "It-Girl Clean",
-        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Hailey_Bieber_2020.jpg/640px-Hailey_Bieber_2020.jpg",
+        image: "assets/images/celebrities/hailey.png",
         mix: [
             { name: "Fleur Narcotique", brand: "Ex Nihilo", color: "bg-purple-400" },
             { name: "Baccarat Rouge 540", brand: "MFK", color: "bg-red-600" }
@@ -257,7 +257,7 @@ export const celebrities = [
     {
         name: "Billie Eilish",
         vibe: "Dark Cocoa",
-        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/Billie_Eilish_at_Global_Gitizen_Live_in_Central_Park_%2851505353846%29_%28cropped%29.jpg/640px-Billie_Eilish_at_Global_Gitizen_Live_in_Central_Park_%2851505353846%29_%28cropped%29.jpg",
+        image: "assets/images/celebrities/billie.png",
         mix: [
             { name: "Chocolate Greedy", brand: "Montale", color: "bg-amber-700" },
             { name: "Tobacco Vanille", brand: "Tom Ford", color: "bg-yellow-600" }
@@ -267,7 +267,7 @@ export const celebrities = [
     {
         name: "Timothée Chalamet",
         vibe: "Artsy Boy",
-        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Timoth%C3%A9e_Chalamet_Cannes_2021.jpg/640px-Timoth%C3%A9e_Chalamet_Cannes_2021.jpg",
+        image: "assets/images/celebrities/timothee.png",
         mix: [
             { name: "Santal 33", brand: "Le Labo", color: "bg-emerald-400" },
             { name: "Encre Noire", brand: "Lalique", color: "bg-black" }
@@ -277,7 +277,7 @@ export const celebrities = [
     {
         name: "Zendaya",
         vibe: "Modern Rose",
-        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/Zendaya_-_2019_by_Glenn_Francis.jpg/640px-Zendaya_-_2019_by_Glenn_Francis.jpg",
+        image: "assets/images/celebrities/zendaya.png",
         mix: [
             { name: "Idôle", brand: "Lancôme", color: "bg-pink-300" },
             { name: "Santal 33", brand: "Le Labo", color: "bg-emerald-400" }
@@ -287,7 +287,7 @@ export const celebrities = [
     {
         name: "Harry Styles",
         vibe: "Bohemian",
-        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Harry_Styles_2017.jpg/640px-Harry_Styles_2017.jpg",
+        image: "assets/images/celebrities/harry.png",
         mix: [
             { name: "Mémoire d'une Odeur", brand: "Gucci", color: "bg-green-300" },
             { name: "Tobacco Vanille", brand: "Tom Ford", color: "bg-yellow-600" }
@@ -297,7 +297,7 @@ export const celebrities = [
     {
         name: "Victoria Beckham",
         vibe: "Posh Spice",
-        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Victoria_Beckham_2010.jpg/640px-Victoria_Beckham_2010.jpg",
+        image: "assets/images/celebrities/victoria.png",
         mix: [
             { name: "Room Service", brand: "Vilhelm Parfumerie", color: "bg-purple-200" },
             { name: "Mango Skin", brand: "Vilhelm Parfumerie", color: "bg-orange-400" }
