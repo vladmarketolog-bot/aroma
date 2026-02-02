@@ -1,6 +1,7 @@
 import { state } from './state.js?v=4';
-import { perfumeDB, alchemyStories, alchemyEffects, celebrities } from './db.js?v=4';
+import { perfumeDB, celebrities } from './db.js?v=4';
 import { ui } from './ui.js?v=4';
+import { NOTE_VOLATILITY, FAMILY_HARMONY, MAGIC_DUOS, EFFECT_TITLES } from './olfactory_data.js?v=1';
 
 window.ui = ui;
 
@@ -371,7 +372,7 @@ function generateRecipes() {
             }
 
             // 4. STRUCTURAL BALANCE
-            analyzeStructure(basePerfume, addonPerfume, score, tags);
+            score += analyzeStructure(basePerfume, addonPerfume);
 
             // 5. VIBE CHECK
             if (state.vibe) {
@@ -421,7 +422,7 @@ function generateRecipes() {
     ui.renderRecipes(topRecipes);
 }
 
-function analyzeStructure(p1, p2, score, tags) {
+function analyzeStructure(p1, p2) {
     const getVol = (p) => p.notes.map(n => NOTE_VOLATILITY[n] || 'heart');
     const v1 = getVol(p1);
     const v2 = getVol(p2);
@@ -430,6 +431,7 @@ function analyzeStructure(p1, p2, score, tags) {
     const hasTop = v1.includes('top') || v2.includes('top');
 
     if (hasBase && hasTop) {
-        score += 15;
+        return 15;
     }
+    return 0;
 }
