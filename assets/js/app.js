@@ -320,27 +320,96 @@ window.fullReset = function () {
     }
 };
 
+// --- OLFACTIVE ENGINE 2.0 ---
+
 function generateRecipes() {
     const userParams = perfumeDB.filter(p => state.wardrobe.includes(p.id));
     const candidates = perfumeDB.filter(p => !state.wardrobe.includes(p.id));
 
     let recipes = [];
 
-    userParams.forEach(u => {
-        candidates.forEach(c => {
-            let score = 0;
-            if (c.vibes.includes(state.vibe)) score += 40;
-            if (u.family !== c.family) score += 20;
-            const shared = u.notes.filter(n => c.notes.includes(n));
-            if (shared.length > 0) score += 15;
+    // Safety check
+    if (userParams.length === 0) {
+        // If wardrobe empty, maybe show random highly rated ones or nothing
+        return;
+    }
 
-            const alchemy = getAlchemyDescription(u, c, state.vibe);
+    userParams.forEach(basePerfume => {
+        candidates.forEach(addonPerfume => {
+            let score = 0;
+            let tags = [];
+            let alchemyType = 'Neutral'; // Bridge, Contrast, Enhance
+            let dynamicTitle = "";
+            let description = "";
+
+            // 1. FAMILY HARMONY (Base Score: 0-20)
+            const harmonyScore = FAMILY_HARMONY[basePerfume.family]?.[addonPerfume.family] || 5;
+            score += harmonyScore * 2;
+
+            if (harmonyScore >= 9) tags.push("🔥 Химия семейств");
+
+            // 2. NOTE BRIDGE (Connection)
+            const sharedNotes = basePerfume.notes.filter(n => addonPerfume.notes.includes(n));
+            if (sharedNotes.length > 0) {
+                score += 30;
+                alchemyType = 'Bridge';
+                tags.push(`✨ Связь: ${sharedNotes[0]}`);
+                description = `Ароматы соединяются через ноту ${sharedNotes[0]}.`;
+            }
+
+            // 3. MAGIC DUO
+            const allNotes = [...basePerfume.notes, ...addonPerfume.notes];
+            const magic = MAGIC_DUOS.find(duo =>
+                duo.notes.every(n => allNotes.some(an => an.includes(n)))
+            );
+
+            if (magic) {
+                score += 50;
+                dynamicTitle = magic.name;
+                description = magic.desc;
+                tags.push("🏆 Золотой Дуэт");
+            }
+
+            // 4. STRUCTURAL BALANCE
+            analyzeStructure(basePerfume, addonPerfume, score, tags);
+
+            // 5. VIBE CHECK
+            if (state.vibe) {
+                if (addonPerfume.vibes.includes(state.vibe)) score += 25;
+            }
+
+            // --- FINAL ASSEMBLY ---
+            if (!dynamicTitle) {
+                const titles = EFFECT_TITLES[alchemyType in EFFECT_TITLES ? alchemyType : 'Contrast'];
+                // Safety check for titles array
+                if (titles && titles.length) {
+                    dynamicTitle = titles[Math.floor(Math.random() * titles.length)];
+                } else {
+                    dynamicTitle = "Смелый Микс";
+                }
+            }
+
+            if (!description) {
+                if (alchemyType === 'Bridge') description = `Гармоничное продолжение ${basePerfume.name}.`;
+                else description = `Смелый контраст текстур.`;
+            }
+
+            // Generate simple Alchemy object compatible with UI
+            const alchemy = {
+                mix: `${basePerfume.notes[0]} + ${addonPerfume.notes[0]}`, // Visual simplification
+                effect: tags[0] || "Гармония",
+                story: description,
+                // We add our new fields too if UI wants to use them later
+                title: dynamicTitle,
+                tags: tags
+            };
 
             recipes.push({
-                id: `${u.id}-${c.id}`,
-                base: u,
-                addon: c,
-                score: score + Math.floor(Math.random() * 15),
+                id: `${basePerfume.id}-${addonPerfume.id}`,
+                base: basePerfume,
+                addon: addonPerfume,
+                score: score,
+                matchPercent: Math.min(99, Math.floor(70 + (score / 150) * 30)),
                 alchemy: alchemy
             });
         });
@@ -352,44 +421,15 @@ function generateRecipes() {
     ui.renderRecipes(topRecipes);
 }
 
-const FAMILY_MAP = {
-    // Woody Archetype
-    'Woody': 'Woody', 'Leather': 'Woody', 'Fougère': 'Woody', 'Chypre': 'Woody', 'Tobacco': 'Woody',
-    // Floral Archetype
-    'Floral': 'Floral',
-    // Citrus/Fresh Archetype
-    'Citrus': 'Citrus', 'Fresh': 'Citrus', 'Green': 'Citrus', 'Aromatic': 'Citrus', 'Sea': 'Citrus', 'Water': 'Citrus',
-    // Gourmand Archetype
-    'Gourmand': 'Gourmand', 'Fruity': 'Gourmand', 'Boozy': 'Gourmand', 'Sweet': 'Gourmand', 'Amber': 'Gourmand', 'Oriental': 'Gourmand', 'Spicy': 'Gourmand',
-    // Clean Archetype
-    'Clean': 'Clean', 'Musk': 'Clean', 'Aldehyde': 'Clean', 'Soapy': 'Clean'
-};
+function analyzeStructure(p1, p2, score, tags) {
+    const getVol = (p) => p.notes.map(n => NOTE_VOLATILITY[n] || 'heart');
+    const v1 = getVol(p1);
+    const v2 = getVol(p2);
 
-function getAlchemyDescription(base, addon, vibe) {
-    const baseNote = base.notes[base.notes.length - 1]; // Pick a base note
-    const topNote = addon.notes[0]; // Pick a top note
+    const hasBase = v1.includes('base') || v2.includes('base');
+    const hasTop = v1.includes('top') || v2.includes('top');
 
-    // Normalize families to use our effects matrix
-    const baseArch = FAMILY_MAP[base.family] || 'Woody';
-    const addonArch = FAMILY_MAP[addon.family] || 'Floral';
-
-    // Try lookup both ways or direct
-    let effect = alchemyEffects[baseArch]?.[addonArch];
-
-    // If not found, try varying the fallback or using a generic "Complex" one
-    if (!effect) {
-        // Fallback for same-family layering
-        if (baseArch === addonArch) {
-            effect = `усиление ${baseArch.toLowerCase()} нот`;
-        } else {
-            effect = 'уникальный контраст';
-        }
+    if (hasBase && hasTop) {
+        score += 15;
     }
-
-    return {
-        mix: `${baseNote} + ${topNote}`,
-        effect: effect,
-        story: alchemyStories[vibe]?.text || "Гармоничное сочетание для вашего образа.",
-        occasion: alchemyStories[vibe]?.occasion || "На каждый день"
-    };
 }
