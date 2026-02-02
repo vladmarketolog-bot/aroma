@@ -373,9 +373,16 @@ function generateRecipes() {
 
             // 3. MAGIC DUO
             const allNotes = [...basePerfume.notes, ...addonPerfume.notes];
-            const magic = MAGIC_DUOS.find(duo =>
-                duo.notes.every(n => allNotes.some(an => an.includes(n)))
-            );
+            const magic = MAGIC_DUOS.find(duo => {
+                const hasAll = duo.notes.every(n => allNotes.some(an => an.includes(n)));
+                if (!hasAll) return false;
+
+                // Anti-Boring Check: Ensure the duo isn't just one perfume
+                const inP1 = duo.notes.every(n => basePerfume.notes.some(an => an.includes(n)));
+                const inP2 = duo.notes.every(n => addonPerfume.notes.some(an => an.includes(n)));
+
+                return !inP1 && !inP2; // Only valid if it requires BOTH
+            });
 
             if (magic) {
                 score += 50;
@@ -624,7 +631,17 @@ window.calculateLabMix = function () {
 
     // 3. Magic
     const allNotes = [...p1.notes, ...p2.notes];
-    const magic = MAGIC_DUOS.find(duo => duo.notes.every(n => allNotes.some(an => an.includes(n))));
+    const magic = MAGIC_DUOS.find(duo => {
+        const hasAll = duo.notes.every(n => allNotes.some(an => an.includes(n)));
+        if (!hasAll) return false;
+
+        // Anti-Boring Check
+        const inP1 = duo.notes.every(n => p1.notes.some(an => an.includes(n)));
+        const inP2 = duo.notes.every(n => p2.notes.some(an => an.includes(n)));
+
+        return !inP1 && !inP2;
+    });
+
     if (magic) {
         score += 50;
         dynamicTitle = magic.name;
